@@ -38,14 +38,73 @@ INSERT INTO trabajador VALUES('5','2', 'Roberto', 'López', 'Morales', '27841542
 CREATE TABLE nomina (
     idNomina INT,
     idTrab INT,
+    domicilio VARCHAR(30) NOT NULL,
+    grupoProfesional INT(2) NOT NULL,
+    grupoCotizacion INT(2) NOT NULL,
+    nivelCotizacion INT(1) NOT NULL,
+    categoria VARCHAR(100) NOT NULL,
+    convenio VARCHAR(50) NOT NULL,
+    salarioBase DECIMAL(6,2) NOT NULL,
+    gratificaciones DECIMAL(5,2),
+    pagasExtra DECIMAL(6,2) NOT NULL,
+    pagasExtraPro DECIMAL(5,2),
+    totalDevengado DECIMAL(6,2) NOT NULL,
+    porcentajeCCTrab DECIMAL(3,2)NOT NULL,
+    cCTrab DECIMAL(5,2)NOT NULL,
+    porcentajeDesTrab DECIMAL(3,2)NOT NULL,
+    desTrab DECIMAL(5,2)NOT NULL,
+    porcentajefpTrab DECIMAL(3,2)NOT NULL,
+    FpTrab DECIMAL(5,2)NOT NULL,
+    porcenajeHEFM DECIMAL(3,2)NOT NULL,
+    HorasExtraFM DECIMAL(5,2)NOT NULL,
+    porcentajeHE DECIMAL(3,2)NOT NULL,
+    HorasExtra DECIMAL(5,2)NOT NULL,
+    porcentajeIRPF DECIMAL(3,2) DEFAULT 2 NOT NULL,
+    IRPF DECIMAL(5,2)NOT NULL,
     totalDeducir DECIMAL(6,2) NOT NULL,
     totalLiquido DECIMAL(6,2) NOT NULL,
-    totalDevengado DECIMAL(6,2) NOT NULL,
+    remuneracionEMp DECIMAL(6,2) NOT NULL,
+    prorrataPagaExtra DECIMAL(5,2) NOT NULL,
+    baseIncTemp DECIMAL(5,2),
+    devengadoSSEMP DECIMAL(6,2) NOT NULL,
+    porcentajeEMPSS DECIMAL(5,2) NOT NULL,
+    sSEMP DECIMAL(5,2) NOT NULL,
+    baseCP DECIMAL(6,2) NOT NULL,
+    porcentajeATEP DECIMAL(4,2) NOT NULL,
+    aTEP DECIMAL(4,2) NOT NULL,
+    porcentajeDesEmp DECIMAL(4,2) NOT NULL,
+    desEmp DECIMAL(4,2) NOT NULL,
+    porcentajeFP DECIMAL(4,2) NOT NULL,
+    fpEmp DECIMAL(4,2) NOT NULL,
+    porcentajeFOGASA DECIMAL(4,2) NOT NULL,
+    fogasa DECIMAL(4,2) NOT NULL,
+    porcentajeCotHE DECIMAL(4,2) NOT NULL,
+    cotHeDECIMAL(4,2) NOT NULL,
     totalAporEmp DECIMAL(6,2) NOT NULL,
+    baseRetenIRPF DECIMAL(6,2) NOT NULL,
+
+
+
+
+    
+
+
+
+    
+
+
+
+
+    
+    
+
+   
     fechaInicio DATE NOT NULL, 
     fechaFin DATE NOT NULL,
     CONSTRAINT fk_trabajador_nomina FOREIGN KEY (idTrab) REFERENCES trabajador(idTrab) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (idNomina, idTrab)
 );
 
-
+-- 
+--    
+--     totalAporEmp DECIMAL(6,2) NOT NULL,
