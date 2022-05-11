@@ -24,16 +24,17 @@ CREATE TABLE trabajador (
     grupoProfesional INT(2) NOT NULL,
     grupoCotizacion INT(2) NOT NULL,
     nivelCotizacion INT(1) NOT NULL,
+    letra VARCHAR (1),
     categoria VARCHAR(100) NOT NULL,
     convenio VARCHAR(50) NOT NULL,
     CONSTRAINT fk_empresa_trabajador FOREIGN KEY (idEmp) REFERENCES empresa(idEmp) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (idTrab, idEmp)
 );
-INSERT INTO trabajador VALUES('1','1', 'Ana', 'García', 'Pérez', '21548942T', '031258974586', '2021/11/01','3','3','2','programador','Oficinas y despachos');
-INSERT INTO trabajador VALUES('2','1', 'Pepe', 'Paredes', 'Pérez', '21785442N', '078459745867', '2022/09/01','4','4','2','analista','Oficinas y despachos');
-INSERT INTO trabajador VALUES('3','1', 'Óscar', 'Santos', 'Sabater', '18758942O','687592974586', '1994/01/19','1','1','1','titulado superior','Oficinas y despachos');
-INSERT INTO trabajador VALUES('4','2', 'Daniela', 'Fernández', 'Martínez', '21356842P', '031259785646', '2000/01/01','5','5','3','capataz','Oficinas y despachos');
-INSERT INTO trabajador VALUES('5','2', 'Roberto', 'López', 'Morales', '27841542S', '036748174586', '1980/08/14','6','6','1','dibujante','Oficinas y despachos');
+INSERT INTO trabajador VALUES('1','1', 'Ana', 'García', 'Pérez', '21548942T', '031258974586', '2021/11/01','3','3','2','A','programador','Oficinas y despachos');
+INSERT INTO trabajador VALUES('2','1', 'Pepe', 'Paredes', 'Pérez', '21785442N', '078459745867', '2022/09/01','4','4','2','B','analista','Oficinas y despachos');
+INSERT INTO trabajador VALUES('3','1', 'Óscar', 'Santos', 'Sabater', '18758942O','687592974586', '1994/01/19','1','1','1','','titulado superior','Oficinas y despachos');
+INSERT INTO trabajador VALUES('4','2', 'Daniela', 'Fernández', 'Martínez', '21356842P', '031259785646', '2000/01/01','5','5','3','','capataz','Oficinas y despachos');
+INSERT INTO trabajador VALUES('5','2', 'Roberto', 'López', 'Morales', '27841542S', '036748174586', '1980/08/14','6','6','1','','dibujante','Oficinas y despachos');
 
 CREATE TABLE nomina (
     idNomina INT,
@@ -82,29 +83,9 @@ CREATE TABLE nomina (
     cotHeDECIMAL(4,2) NOT NULL,
     totalAporEmp DECIMAL(6,2) NOT NULL,
     baseRetenIRPF DECIMAL(6,2) NOT NULL,
-
-
-
-
-    
-
-
-
-    
-
-
-
-
-    
-    
-
-   
     fechaInicio DATE NOT NULL, 
     fechaFin DATE NOT NULL,
     CONSTRAINT fk_trabajador_nomina FOREIGN KEY (idTrab) REFERENCES trabajador(idTrab) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (idNomina, idTrab)
 );
 
--- 
---    
---     totalAporEmp DECIMAL(6,2) NOT NULL,
