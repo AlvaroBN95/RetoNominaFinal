@@ -36,6 +36,37 @@ INSERT INTO trabajador VALUES('3','1', 'Óscar', 'Santos', 'Sabater', '18758942O
 INSERT INTO trabajador VALUES('4','2', 'Daniela', 'Fernández', 'Martínez', '21356842P', '031259785646', '2000/01/01','5','5','3','','capataz','Oficinas y despachos');
 INSERT INTO trabajador VALUES('5','2', 'Roberto', 'López', 'Morales', '27841542S', '036748174586', '1980/08/14','6','6','1','','dibujante','Oficinas y despachos');
 
+
+CREATE TABLE convenio(
+
+    grupoProfesional INT(2) NOT NULL,
+    grupoCotizacion INT(2) NOT NULL,
+    nivelCotizacion INT(1) NOT NULL,
+    letra VARCHAR (1),
+
+);
+
+
+CREATE TABLE contingeniasComunesTrab (
+tipoContratoTrab VARCHAR (50) NOT NULL,
+porcentajeCCTrab DECIMAL(3,2)NOT NULL,
+porcentajeDesTrab DECIMAL(3,2)NOT NULL,
+porcentajefpTrab DECIMAL(3,2)NOT NULL,
+porcenajeHEFM DECIMAL(3,2)NOT NULL,
+porcentajeHE DECIMAL(3,2)NOT NULL,
+porcentajeIRPF DECIMAL(3,2) DEFAULT 2 NOT NULL,
+);
+
+CREATE TABLE contingeniasComunesEmp (
+tipoContratoTrab VARCHAR (50) NOT NULL,
+porcentajeEMPSS DECIMAL(5,2) NOT NULL, 
+porcentajeATEP DECIMAL(4,2) NOT NULL DEFAULT 1.50,
+porcentajeDesEmp DECIMAL(4,2) NOT NULL,
+porcentajeFPEmp DECIMAL(4,2) NOT NULL,
+porcentajeFOGASA DECIMAL(4,2) NOT NULL,
+
+);
+
 CREATE TABLE nomina (
     idNomina INT,
     idTrab INT,
@@ -71,7 +102,7 @@ CREATE TABLE nomina (
     porcentajeEMPSS DECIMAL(5,2) NOT NULL,
     sSEMP DECIMAL(5,2) NOT NULL,
     baseCP DECIMAL(6,2) NOT NULL,
-    porcentajeATEP DECIMAL(4,2) NOT NULL,
+    porcentajeATEP DECIMAL(4,2) NOT NULL DEFAULT 1.5,
     aTEP DECIMAL(4,2) NOT NULL,
     porcentajeDesEmp DECIMAL(4,2) NOT NULL,
     desEmp DECIMAL(4,2) NOT NULL,
@@ -80,7 +111,7 @@ CREATE TABLE nomina (
     porcentajeFOGASA DECIMAL(4,2) NOT NULL,
     fogasa DECIMAL(4,2) NOT NULL,
     porcentajeCotHE DECIMAL(4,2) NOT NULL,
-    cotHe DECIMAL(4,2) NOT NULL,
+    cotHeDECIMAL(4,2) NOT NULL,
     totalAporEmp DECIMAL(6,2) NOT NULL,
     baseRetenIRPF DECIMAL(6,2) NOT NULL,
     fechaInicio DATE NOT NULL, 
@@ -88,4 +119,3 @@ CREATE TABLE nomina (
     CONSTRAINT fk_trabajador_nomina FOREIGN KEY (idTrab) REFERENCES trabajador(idTrab) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (idNomina, idTrab)
 );
-
