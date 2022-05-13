@@ -18,12 +18,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmpresaService {
-    @Autowired(required=false)
+    @Autowired
     EmpresaRepository repositorioEmpresa;
 
      public List dimeEmpresas(){
         List<Empresa> listaEmpresas = repositorioEmpresa.findAll();
+        
         return listaEmpresas;
+        
     }
      
      public Empresa dimeEmpresaPorId(Long id){

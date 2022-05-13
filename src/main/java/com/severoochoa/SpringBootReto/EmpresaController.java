@@ -31,6 +31,7 @@ public class EmpresaController {
             resultado += e.getNomEmp() + "\n";
         }
         return ResponseEntity.ok(resultado);
+        
     }
     
     @GetMapping("/{idEmp}")
