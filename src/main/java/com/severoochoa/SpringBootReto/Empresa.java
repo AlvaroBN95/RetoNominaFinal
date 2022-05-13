@@ -7,7 +7,6 @@ package com.severoochoa.SpringBootReto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 /**
@@ -18,9 +17,8 @@ import javax.persistence.Table;
 @Table(name="empresa")
 public class Empresa {
     @Id
-    @GeneratedValue
-    @Column (name="idEmp")
-    private Long idEmp;
+    @Column (name="idemp")
+    private Long idemp;
     
     @Column(name="cif")
     private String cif;
@@ -31,15 +29,15 @@ public class Empresa {
     @Column(name="ccc")
     private String ccc;
     
-    @Column(name="nomEmp")
-    private String nomEmp;
+    @Column(name="nomemp")
+    private String nomemp;
 
     public Long getIdEmp() {
-        return idEmp;
+        return idemp;
     }
 
     public void setIdEmp(Long idEmp) {
-        this.idEmp = idEmp;
+        this.idemp = idEmp;
     }
 
     public String getCif() {
@@ -67,10 +65,10 @@ public class Empresa {
     }
 
     public String getNomEmp() {
-        return nomEmp;
+        return nomemp;
     }
 
     public void setNomEmp(String nomEmp) {
-        this.nomEmp = nomEmp;
+        this.nomemp = nomEmp;
     }
 }
