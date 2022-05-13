@@ -5,27 +5,28 @@
  */
 package com.severoochoa.SpringBootReto;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.IOException;
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 /**
  *
  * @author inmag
  */
 @RestController
-@RequestMapping("/nomina")
-public class NominaController {
-        @Autowired
-    NominaService service;
-    
-    @PostMapping("/leerarchivo")
-    public void procesaFichero(HttpServletRequest request) throws IOException {
-        service.getFileContent(request);
+@RequestMapping("/trabajador")
+public class TrabajadorController {
+    @Autowired
+    TrabajadorService servicioTrabajador;
+    @PostMapping("/crearTrab")
+    public ResponseEntity crearTrabajador(Long idtrab){
+        
+       servicioTrabajador.informacionTrabajador(idtrab);
+       return ResponseEntity.ok().build();
     }
+    
 }
