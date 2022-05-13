@@ -20,7 +20,7 @@ CREATE TABLE trabajador (
     ape2Trab VARCHAR(20) NOT NULL,
     dni VARCHAR(10) NOT NULL UNIQUE,
     naf VARCHAR(12) NOT NULL UNIQUE,
-    fechaAntiguedad DATE NOT NULL,
+    fechaAntiguedad VARCHAR(10)NOT NULL,
     grupoProfesional INT(2) NOT NULL,
     grupoCotizacion INT(2) NOT NULL,
     nivelCotizacion INT(1) NOT NULL,
