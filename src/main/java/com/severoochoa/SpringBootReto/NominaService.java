@@ -49,7 +49,6 @@ public class NominaService {
             System.err.println("Error 1! " + ex.getMessage());
         }
        
- 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder;
     Document doc;
@@ -65,7 +64,7 @@ public class NominaService {
         System.out.println(el.getNodeName() + "element : " + el.getTextContent());
     }
     } catch (SAXException | IOException | ParserConfigurationException e) {
-        System.err.println("Error 2! " + e.getMessage());
+        System.err.println("Error! " + e.getMessage());
         }
     
     
