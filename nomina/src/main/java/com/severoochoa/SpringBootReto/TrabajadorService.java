@@ -15,10 +15,9 @@ import org.springframework.stereotype.Service;
 public class TrabajadorService {
     @Autowired
     TrabajadorRepository repositorioTrabajador;
-    public void informacionTrabajador(Long idTrab){
-        //crear un objeto User
+    public void informacionTrabajador(Long idtrab){
         Trabajador trab= new Trabajador();
-        trab.setIdtrab(idTrab);
+        trab.setIdtrab(idtrab);
         repositorioTrabajador.save(trab);
     }
 }

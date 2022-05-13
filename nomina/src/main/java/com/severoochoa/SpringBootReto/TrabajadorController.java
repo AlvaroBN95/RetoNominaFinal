@@ -22,9 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class TrabajadorController {
     @Autowired
     TrabajadorService servicioTrabajador;
+    
     @PostMapping("/crearTrab")
     public ResponseEntity crearTrabajador(Long idtrab){
-        
+        System.out.println(idtrab);
        servicioTrabajador.informacionTrabajador(idtrab);
        return ResponseEntity.ok().build();
     }

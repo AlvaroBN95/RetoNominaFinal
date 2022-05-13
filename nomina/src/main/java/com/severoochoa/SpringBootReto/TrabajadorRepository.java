@@ -16,4 +16,5 @@ import org.springframework.stereotype.Repository;
 public interface TrabajadorRepository extends JpaRepository<Trabajador,Long>{
     @Override
     <S extends Trabajador> S save (S s);
+    
 }
