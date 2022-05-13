@@ -19,9 +19,9 @@ public class Trabajador {
     @Id
     @Column (name="idtrab")
     private Long idtrab;
-    @Id
-    @Column(name="idemp")
-    private Long idemp;
+    
+   /* @Column(name="idemp")
+    private Long idemp;*/
 
     public Long getIdtrab() {
         return idtrab;
@@ -31,7 +31,7 @@ public class Trabajador {
         this.idtrab = idtrab;
     }
 
-    public Long getIdemp() {
+  /*  public Long getIdemp() {
         return idemp;
     }
 
@@ -128,7 +128,7 @@ public class Trabajador {
     }
 
     
-    
+   
     @Column(name="ape1emp")
     private String ape1emp;
     
@@ -160,5 +160,5 @@ public class Trabajador {
     private String convenio;
     
     @Column(name="categoria")
-    private String categoria;
+    private String categoria;*/
 }
