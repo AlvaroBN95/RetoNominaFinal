@@ -1,0 +1,11 @@
+ANTES DE NADA
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+docker rmi $(docker images -q)
+docker volume prune
+
+EMPIEZA
+1. docker build . -t mariadb:1
+2. docker run -d -p 33061:3306 --name mariadb-db  -v volumedb:/var/lib/mysql mariadb:1
+3. docker exec -it mariadb-db mysql -u root -p nomina <-- PARA ACCEDER A LA BASE DE DATOS, CLAVE: 123
+4. docker inspect mariadb-db

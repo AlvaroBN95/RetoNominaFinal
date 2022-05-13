@@ -1,0 +1,166 @@
+<convenio>
+<nombre>Convenio colectivo provincial de oficinas y despachos de alicante</nombre>
+<ambito_territorial>Alicante</ambito_territorial>
+<grupos_profesionales>
+
+    <grupo_profesional grupo="1">
+        <nivel_profesional nivel="">
+            <categoria_profesional letra="">
+                <nombre>Titulado Superior</nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <salarios anyo="2022">
+          <salario nivel="1" letra=""> 25851.50</salario>
+          <salario nivel="2" letra=""> 20681.35 </salario>
+          <salario nivel="3" letra=""> 18096.18 </salario>
+        </salarios>
+    </grupo_profesional>
+
+    <grupo_profesional grupo="2">
+        <nivel_profesional nivel="">
+            <categoria_profesional letra="">
+                <nombre>Titulado Medio</nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <salarios anyo="2022">
+          <salario nivel="1" letra=""> 23116.65</salario>
+          <salario nivel="2" letra=""> 18494.07</salario>
+          <salario nivel="3" letra=""> 16181.56</salario>
+        </salarios>
+    </grupo_profesional>
+
+    <grupo_profesional grupo="3">
+        <nivel_profesional nivel="1">
+            <categoria_profesional letra="a">
+                <nombre>Jefe Administración Superior, Jefe Delineación</nombre>
+            </categoria_profesional>
+             <categoria_profesional letra="b">
+                <nombre>Delineante proyectista</nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <nivel_profesional nivel="2">
+            <categoria_profesional letra="">
+                <nombre>Encargado laboratorio, Jefe de Primera Administrativo , Jefe equipo informática, Analista de informática, 
+                programador o técnico de sistemas y comunicaciones
+                </nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <nivel_profesional nivel="3">
+            <categoria_profesional letra="a">
+                <nombre>Delineante de primera</nombre>
+            </categoria_profesional>
+            <categoria_profesional letra="b">
+                <nombre>Delineante de segunda</nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <salarios anyo="2022">
+          <salario nivel="1" letra="A">23117.39</salario>
+          <salario nivel="1" letra="B">22882.54</salario>
+          <salario nivel="2" letra="A">20283.11</salario>
+          <salario nivel="3" letra="A">19754.30</salario>
+          <salario nivel="3" letra="B">18765.92</salario>
+        </salarios>
+    </grupo_profesional>
+
+    <grupo_profesional grupo="4">
+        <nivel_profesional nivel="1">
+            <categoria_profesional letra="">
+                <nombre>Jefe Administrativo de Segunda, Cajero con firma,programador maquinas auxiliares, administrador de test, 
+                coordinador tratamientos cuestionarios, jefe explotación,interpretes jurados, secretarias/os de Dirección.
+                </nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <nivel_profesional nivel="2">
+            <categoria_profesional letra="a">
+                <nombre>Técnico analista, analista de primera</nombre>
+            </categoria_profesional>
+            <categoria_profesional letra="b">
+                <nombre>Analista de segunda</nombre>
+            </categoria_profesional>
+            <categoria_profesional letra="c">
+                <nombre>Inspector entrevistador, encargado, operador tabuladores</nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <salarios anyo="2022">
+          <salario nivel="1" letra="A"> 18394.34</salario>
+          <salario nivel="2" letra="A"> 18091.01</salario>
+          <salario nivel="2" letra="B"> 17411.77</salario>
+          <salario nivel="2" letra="C"> 17142.28</salario>
+        </salarios>
+    </grupo_profesional>
+
+    <grupo_profesional grupo="5">
+        <nivel_profesional nivel="1">
+            <categoria_profesional letra="">
+                <nombre>Oficial de primera, taquígrafo, cajero sin firma, coordinador de estudios, responsable equipo encuestas, 
+                operador ordenadores 1ª, jefe de maquinas básicas, clasificador, responsable central teleoperadores
+                </nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <nivel_profesional nivel="2">
+            <categoria_profesional letra="a">
+                <nombre>Oficial de primera en laboratorio</nombre>
+            </categoria_profesional>
+            <categoria_profesional letra="b">
+                <nombre>Oficial segunda laboratorio</nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <salarios anyo="2022">
+          <salario nivel="1" letra=""> 16903.15</salario>
+          <salario nivel="2" letra="A"> 16698.86</salario>
+          <salario nivel="2" letra="B"> 16101.77</salario>
+          <salario nivel="3" letra=""> 16007.79</salario>
+          <salario nivel="4" letra=""> 15908.40</salario>
+        </salarios>
+    </grupo_profesional>
+
+    <grupo_profesional grupo="6">
+        <nivel_profesional nivel="1">
+            <categoria_profesional letra="">
+                <nombre>Operador de máquinas básicas, dibujante, entrevistador/encuestador; Oficial de oficios de primera,
+                conductor, jardinero
+                </nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <nivel_profesional nivel="2">
+            <categoria_profesional letra="">
+                <nombre>Calcador, Conserje Mayor, Conserje ordenanza- Vigilante de noche, oficial oficios de segunda</nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <salarios anyo="2022">
+          <salario nivel="1" letra=""> 14914.15</salario>
+          <salario nivel="2" letra="">14218.42</salario>
+        </salarios>
+    </grupo_profesional>
+
+     <grupo_profesional grupo="7">
+        <nivel_profesional nivel="1">
+            <categoria_profesional letra="">
+                <nombre>Auxiliar Administrativo más de 3 años, Teleoperadores mas de 3 años</nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <nivel_profesional nivel="2">
+            <categoria_profesional letra="">
+                <nombre>Auxiliar administrativo de entrada, perforista de segunda;auxiliar de laboratorio; Ayudante operador, cobrador-pagador;
+                auxiliar de caja, operador reproducción multicop, Peón, mozo,personal de limpieza, personal de oficios básicos, conserje
+                ordenanza portero día; costurera oficial, botones, bedeles, teleoperadores
+            </nombre>
+            </categoria_profesional>
+        </nivel_profesional>
+        <salarios anyo="2022">
+          <salario nivel="1" letra="">13770.00</salario>
+          <salario nivel="2" letra="">13770.00</salario>
+        </salarios>
+    </grupo_profesional>
+
+</grupos_profesionales>
+
+<complementos anyo="2022">
+    <ayuda_especial>119.60</ayuda_especial>
+    <plus_transporte>2.49</plus_transporte>
+    <plus_trabajo>2.49</plus_trabajo>
+    <dieta_media>19.20</dieta_media>
+    <dieta_completa>56.48</dieta_completa>
+</complementos>
+
+</convenio>
