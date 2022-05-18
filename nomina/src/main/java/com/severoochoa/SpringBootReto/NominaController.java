@@ -8,6 +8,7 @@ package com.severoochoa.SpringBootReto;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,17 @@ public class NominaController {
     
     @PostMapping("/leerarchivo")
     public void procesaFichero(HttpServletRequest request) throws IOException {
-        service.getFileContent(request);
+        List<Trabajador> listaTrabajadores = service.dimeTrabajadores();
+        int grupo = 0;
+        int nivel = 0; 
+        String letra = ""; 
+        String devuelveArchivo = service.getFileContent(request);
+        for (Trabajador t : listaTrabajadores){
+            grupo = t.getGrupocotizacion();
+            nivel = t.getNivelcotizacion();
+            letra = t.getLetra();
+            service.conseguirSalario(grupo, nivel, letra, devuelveArchivo);
+        }
     }
     
     @GetMapping("/empresa/{idemp}")
@@ -51,5 +62,5 @@ public class NominaController {
             return ResponseEntity.ok(trabajador);
         }
     }
-    
+
 }
