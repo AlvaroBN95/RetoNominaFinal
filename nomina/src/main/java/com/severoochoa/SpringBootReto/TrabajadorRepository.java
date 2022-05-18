@@ -6,6 +6,7 @@
 package com.severoochoa.SpringBootReto;
 
 
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 /**
@@ -17,4 +18,5 @@ public interface TrabajadorRepository extends JpaRepository<Trabajador,Long>{
     @Override
     <S extends Trabajador> S save (S s);
     
+    Optional<Trabajador> findByIdtrab(Long idtrab);
 }

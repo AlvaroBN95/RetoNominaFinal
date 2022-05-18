@@ -38,7 +38,7 @@ public class EmpresaService {
  
     }
      
-     public Empresa mostrarTodo(Long id){
+    /* public Empresa mostrarTodo(Long id){
         Optional<List<Empresa>> empresa = repositorioEmpresa.listarEmpresaId();
         if (empresa.isPresent()){
             return empresa.get();
@@ -46,7 +46,7 @@ public class EmpresaService {
             return null;
         }
  
-    }
+    }*/
      
      }
 
