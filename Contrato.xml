@@ -1,0 +1,34 @@
+<contratacion>
+    <contrato>
+        <tipo_contrato>
+            <nombre>tiempo parcial</nombre>
+            <grupo_cotizacion></grupo_cotizacion>
+            <base_minima></base_minima>
+            <grupo_cotizacion></grupo_cotizacion>
+            <base_minima></base_minima>
+            <grupo_cotizacion></grupo_cotizacion>
+            <base_minima></base_minima>
+            <grupo_cotizacion></grupo_cotizacion>
+            <base_minima></base_minima>
+        </tipo_contrato>
+        <tipo_contrato>
+            <nombre>formacion aprendizaje</nombre>
+            <concepto></concepto>
+            <empresa></empresa>
+            <trabajador></trabajador>
+            <total></total>
+            <concepto></concepto>
+            <empresa></empresa>
+            <trabajador></trabajador>
+            <total></total>
+            <concepto></concepto>
+            <empresa></empresa>
+            <trabajador></trabajador>
+            <total></total>
+            <concepto></concepto>
+            <empresa></empresa>
+            <trabajador></trabajador>
+            <total></total>
+        </tipo_contrato>
+    </contrato>
+</contratacion>
