@@ -17,9 +17,12 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.List;
+import java.util.Optional;
 
 
 import javax.xml.parsers.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -31,7 +34,13 @@ import org.xml.sax.SAXException;
  */
 @Service
 public class NominaService {
-    public void getFileContent(HttpServletRequest request) throws IOException{
+    @Autowired
+    EmpresaRepository repositorioEmpresa;
+    
+    @Autowired
+    TrabajadorRepository repositorioTrabajador;
+    
+    public String getFileContent(HttpServletRequest request) throws IOException{
         String fileContent= "";
         try {
            InputStream input = request.getInputStream();
@@ -48,28 +57,62 @@ public class NominaService {
         }catch (IOException ex){
             System.err.println("Error 1! " + ex.getMessage());
         }
-       
+    return fileContent;
+    }
+    
+    public Empresa getEmpresaById(Long idemp){
+        Optional<Empresa> empresa = repositorioEmpresa.findByIdemp(idemp);
+        if (empresa.isPresent()){
+            return empresa.get();
+        } else {
+            return null;
+        }
+    }
+    
+     public Trabajador getTrabajadorById(Long idtrab){
+        Optional<Trabajador> trabajador = repositorioTrabajador.findByIdtrab(idtrab);
+        if (trabajador.isPresent()){
+            return trabajador.get();
+        } else {
+            return null;
+        }
+    }
+     
+     public List dimeTrabajadores(){
+        List<Trabajador> listaTrabajadores = repositorioTrabajador.findAll();
+        return listaTrabajadores;
+        
+    }
+     
+    public double conseguirSalario(int grupo,int nivel,String letra,String devuelveArchivo){
+    double salarios=0;
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder;
     Document doc;
     try {
       builder = factory.newDocumentBuilder();
-      doc = (Document) builder.parse(new InputSource(new StringReader(fileContent)));
+      doc = (Document) builder.parse(new InputSource(new StringReader(devuelveArchivo)));
       doc.getDocumentElement().normalize();
       System.out.println("Root : " + doc.getDocumentElement().getNodeName());
-        System.out.println("\nSalarios in the xml: ");
-        NodeList nameList = doc.getElementsByTagName("salario");
-        for (int i = 0; i < nameList.getLength(); i++) {
-        Element el = (Element) nameList.item(i);
-        System.out.println(el.getNodeName() + "element : " + el.getTextContent());
+      System.out.println("\nSalarios in the xml: ");
+      NodeList nameList = doc.getElementsByTagName("salarios");
+      for (int i = 0; i < nameList.getLength(); i++) {
+        //Element el = (Element) nameList.item(i);
+        //System.out.println(el.getNodeName() + "element : " + el.getTextContent());
+        Node node = nameList.item(i);
+        if (node.getNodeType() == Node.ELEMENT_NODE){
+            Element element = (Element)node;
+            String anyo = element.getAttribute("anyo");
+            String salario = element.getElementsByTagName("salario").item(0).getTextContent();
+            System.out.println(salario);
+        } 
     }
     } catch (SAXException | IOException | ParserConfigurationException e) {
         System.err.println("Error! " + e.getMessage());
         }
-    
-    
-        
-    }
+    System.out.println("grupo: " + grupo + "nivel: " +nivel+ "letra: " + letra);
+        return salarios;
+    }  
 }
     
 

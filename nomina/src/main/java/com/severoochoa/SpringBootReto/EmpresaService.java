@@ -23,7 +23,6 @@ public class EmpresaService {
 
      public List dimeEmpresas(){
         List<Empresa> listaEmpresas = repositorioEmpresa.findAll();
-        
         return listaEmpresas;
         
     }
