@@ -17,9 +17,11 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Optional;
 
 
 import javax.xml.parsers.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -31,6 +33,12 @@ import org.xml.sax.SAXException;
  */
 @Service
 public class NominaService {
+    @Autowired
+    EmpresaRepository repositorioEmpresa;
+    
+    @Autowired
+    TrabajadorRepository repositorioTrabajador;
+    
     public void getFileContent(HttpServletRequest request) throws IOException{
         String fileContent= "";
         try {
@@ -57,18 +65,42 @@ public class NominaService {
       doc = (Document) builder.parse(new InputSource(new StringReader(fileContent)));
       doc.getDocumentElement().normalize();
       System.out.println("Root : " + doc.getDocumentElement().getNodeName());
-        System.out.println("\nSalarios in the xml: ");
-        NodeList nameList = doc.getElementsByTagName("salario");
-        for (int i = 0; i < nameList.getLength(); i++) {
-        Element el = (Element) nameList.item(i);
-        System.out.println(el.getNodeName() + "element : " + el.getTextContent());
+      System.out.println("\nSalarios in the xml: ");
+      NodeList nameList = doc.getElementsByTagName("salarios");
+      for (int i = 0; i < nameList.getLength(); i++) {
+        //Element el = (Element) nameList.item(i);
+        //System.out.println(el.getNodeName() + "element : " + el.getTextContent());
+        Node node = nameList.item(i);
+        if (node.getNodeType() == Node.ELEMENT_NODE){
+            Element element = (Element)node;
+            String anyo = element.getAttribute("anyo");
+            String salario = element.getElementsByTagName("salario").item(0).getTextContent();
+            System.out.println(salario);
+        }
+        
+        
     }
     } catch (SAXException | IOException | ParserConfigurationException e) {
         System.err.println("Error! " + e.getMessage());
         }
+    }
     
+    public Empresa getEmpresaById(Long idemp){
+        Optional<Empresa> empresa = repositorioEmpresa.findByIdemp(idemp);
+        if (empresa.isPresent()){
+            return empresa.get();
+        } else {
+            return null;
+        }
+    }
     
-        
+     public Trabajador getTrabajadorById(Long idtrab){
+        Optional<Trabajador> trabajador = repositorioTrabajador.findByIdtrab(idtrab);
+        if (trabajador.isPresent()){
+            return trabajador.get();
+        } else {
+            return null;
+        }
     }
 }
     
