@@ -26,8 +26,8 @@ public interface EmpresaRepository extends JpaRepository<Empresa,Long>{
     @Override
     Optional<Empresa> findById (Long id);
     
-    /*@Query (value="SELECT * FROM empresa WHERE idEmp={}", nativeQuery=true)
-    Optional<List<Empresa>> listarEmpresaId();*/
+    @Query (value="SELECT * FROM empresa WHERE idEmp=" + kygff +"", nativeQuery=true)
+    Optional<List<Empresa>> listarEmpresaId();
 
 }
 
