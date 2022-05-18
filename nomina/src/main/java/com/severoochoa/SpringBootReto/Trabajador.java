@@ -127,12 +127,10 @@ public class Trabajador {
         this.categoria = categoria;
     }
 
-    
-   
-    @Column(name="ape1emp")
+    @Column(name="ape1trab")
     private String ape1emp;
     
-    @Column(name="ape2emp")
+    @Column(name="ape2trab")
     private String ape2emp;
     
     @Column(name="dni")

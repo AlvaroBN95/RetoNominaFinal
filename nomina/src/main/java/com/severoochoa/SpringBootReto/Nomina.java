@@ -33,7 +33,7 @@ public class Nomina {
     }
     
     
-    @Column(name="idtrab")
+    /*@Column(name="idtrab")
     private Long idtrab;
     
     @Column(name="domicilio")
@@ -157,6 +157,6 @@ public class Nomina {
     private String fechainicio;
     
     @Column(name="fechafin")
-    private String fechafin;
+    private String fechafin;*/
     
 }
