@@ -42,7 +42,7 @@ CREATE TABLE convenio(
     grupoProfesional INT(2) NOT NULL,
     grupoCotizacion INT(2) NOT NULL,
     nivelCotizacion INT(1) NOT NULL,
-    letra VARCHAR (1),
+    letra VARCHAR (1)
 
 );
 
@@ -54,7 +54,7 @@ porcentajeDesTrab DECIMAL(3,2)NOT NULL,
 porcentajefpTrab DECIMAL(3,2)NOT NULL,
 porcenajeHEFM DECIMAL(3,2)NOT NULL,
 porcentajeHE DECIMAL(3,2)NOT NULL,
-porcentajeIRPF DECIMAL(3,2) DEFAULT 2 NOT NULL,
+porcentajeIRPF DECIMAL(3,2) DEFAULT 2 NOT NULL
 );
 
 CREATE TABLE contingeniasComunesEmp (
@@ -63,7 +63,7 @@ porcentajeEMPSS DECIMAL(5,2) NOT NULL,
 porcentajeATEP DECIMAL(4,2) NOT NULL DEFAULT 1.50,
 porcentajeDesEmp DECIMAL(4,2) NOT NULL,
 porcentajeFPEmp DECIMAL(4,2) NOT NULL,
-porcentajeFOGASA DECIMAL(4,2) NOT NULL,
+porcentajeFOGASA DECIMAL(4,2) NOT NULL
 
 );
 

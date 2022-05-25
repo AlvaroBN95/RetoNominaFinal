@@ -23,7 +23,6 @@ public class EmpresaService {
 
      public List dimeEmpresas(){
         List<Empresa> listaEmpresas = repositorioEmpresa.findAll();
-        
         return listaEmpresas;
         
     }
@@ -39,7 +38,7 @@ public class EmpresaService {
     }
      
     /* public Empresa mostrarTodo(Long id){
-        Optional<Empresa> empresa = repositorioEmpresa.listarEmpresaId();
+        Optional<List<Empresa>> empresa = repositorioEmpresa.listarEmpresaId();
         if (empresa.isPresent()){
             return empresa.get();
         } else {
