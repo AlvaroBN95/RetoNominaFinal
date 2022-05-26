@@ -33,6 +33,7 @@ public class Pdf {
         Paragraph parrafo = new Paragraph();
         //Empresa
         Chunk empresa = new Chunk("EMPRESA", titulos);
+        Chunk nomempr = new Chunk("-Nombre empresa: ", contenidos);
         Chunk domicilioemp = new Chunk("-Domicilio de la empresa: ", contenidos);
         Chunk cif = new Chunk("-CIF: ", contenidos);
         Chunk ccc = new Chunk("-CCC: ", contenidos);
@@ -50,8 +51,8 @@ public class Pdf {
         //Percepciones salariales
         Chunk persal = new Chunk("·Percepciones salariales: ", miniTitulos);
         Chunk salba = new Chunk(" -Salario Base: ", contenidos);
-        Chunk compsa = new Chunk(" -Complementos salariales: ", miniTitulos);
-        Chunk compsa1 = new Chunk("  -Complementos salariales: ", contenidos);
+        Chunk compsa = new Chunk(" -Complementos salariales: ", contenidos);
+        Chunk compsa1 = new Chunk("  -Plus transporte: ", contenidos);
         Chunk compsa2 = new Chunk("  -Complementos salariales: ", contenidos);
         Chunk pagex = new Chunk(" -Pagas extraordinarias: ", contenidos);
         //Devengos Percepciones no salariales
@@ -59,8 +60,35 @@ public class Pdf {
         Chunk dieta = new Chunk(" -Dieta: ", contenidos);
         //Total devengado
         Chunk totdev = new Chunk("·Total devengado: ", miniTitulos);
+        //Deducciones
+        Chunk deduc = new Chunk("Deducciones:", titulos);
+        //Deducciones trabajador
+        Chunk segsoc = new Chunk(" ·Deducciones del trabajador a la seguridad social: ", miniTitulos);
+        Chunk contcom = new Chunk("  -Contingencias comunes: ", contenidos);
+        Chunk desempleo = new Chunk("  -Desempleo: ", contenidos);
+        Chunk fp = new Chunk("  -Formación profesional: ", contenidos);
+        Chunk horasex = new Chunk("  -Horas extraordinarias ordinarias: ", contenidos);
+        Chunk horasexfu = new Chunk("  -Horas extraordinarias por fuerza mayor: ", contenidos);
+        Chunk hacienda = new Chunk(" ·Deducciones del trabajador a hacienda: ", miniTitulos);
+        Chunk irpf = new Chunk("  -IRPF: ", contenidos);
+        //Total a deducir
+        Chunk totded = new Chunk(" ·Total a deducir: ", miniTitulos);
+        //Total liquido
+        Chunk totliq = new Chunk(" ·Liquido total a percibir: ", miniTitulos);
+        //Deducciones empresa
+        Chunk dedemp = new Chunk(" ·Deducciones de la empresa: ", miniTitulos);
+        Chunk contcomemp = new Chunk("  -Contingencias comunes: ", contenidos);
+        Chunk atyet = new Chunk("  -AT y ET: ", contenidos);
+        Chunk desempleoemp = new Chunk("  -Desempleo: ", contenidos);
+        Chunk fpemp = new Chunk("  -Formación profesional: ", contenidos);
+        Chunk horasexemp = new Chunk("  -Horas extraordinarias ordinarias: ", contenidos);
+        Chunk horasexfuemp = new Chunk("  -Horas extraordinarias por fuerza mayor: ", contenidos);
+        Chunk fogasa = new Chunk("  -Fogasa: ", contenidos);
+        Chunk totdedemp = new Chunk(" ·Total a deducir: ", miniTitulos);
         //Empresa
         document.add(empresa);
+        document.add(parrafo);
+        document.add(nomempr);
         document.add(parrafo);
         document.add(domicilioemp);
         document.add(parrafo);
@@ -109,6 +137,54 @@ public class Pdf {
         //Total devengado
         document.add(totdev);
         document.add(parrafo);
+        //Deducciones
+        document.add(deduc);
+        document.add(parrafo);
+        //Deducciones trabajador
+        document.add(segsoc);
+        document.add(parrafo);
+        document.add(contcom);
+        document.add(parrafo);
+        document.add(desempleo);
+        document.add(parrafo);
+        document.add(fp);
+        document.add(parrafo);
+        document.add(horasex);
+        document.add(parrafo);
+        document.add(horasexfu);
+        document.add(parrafo);
+        document.add(hacienda);
+        document.add(parrafo);
+        document.add(irpf);
+        document.add(parrafo);
+        //Total a deducir
+        document.add(totded);
+        document.add(parrafo);
+        //Total liquido
+        document.add(totliq);
+        document.add(parrafo);
+        //Deducciones empresa
+        document.add(dedemp);
+        document.add(parrafo);
+        document.add(contcomemp);
+        document.add(parrafo);
+        document.add(atyet);
+        document.add(parrafo);
+        document.add(desempleoemp);
+        document.add(parrafo);
+        document.add(fpemp);
+        document.add(parrafo);
+        document.add(horasexemp);
+        document.add(parrafo);
+        document.add(horasexfuemp);
+        document.add(parrafo);
+        document.add(fogasa);
+        document.add(parrafo);
+        document.add(horasexfuemp);
+        document.add(parrafo);
+        document.add(totdedemp);
+        document.add(parrafo);
+        //final
         document.close();
     }
 }
