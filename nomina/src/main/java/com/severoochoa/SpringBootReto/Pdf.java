@@ -31,6 +31,7 @@ public class Pdf {
         Font miniTitulos = FontFactory.getFont(FontFactory.COURIER, 12, BaseColor.BLACK);
         Font contenidos = FontFactory.getFont(FontFactory.COURIER, 10, BaseColor.BLACK);
         Paragraph parrafo = new Paragraph();
+        Chunk parrafo1 = new Chunk(" ", titulos);
         //Empresa
         Chunk empresa = new Chunk("EMPRESA", titulos);
         Chunk nomempr = new Chunk("-Nombre empresa: ", contenidos);
@@ -61,7 +62,7 @@ public class Pdf {
         //Total devengado
         Chunk totdev = new Chunk("·Total devengado: ", miniTitulos);
         //Deducciones
-        Chunk deduc = new Chunk("Deducciones:", titulos);
+        Chunk deduc = new Chunk("DEDUCCIONES", titulos);
         //Deducciones trabajador
         Chunk segsoc = new Chunk(" ·Deducciones del trabajador a la seguridad social: ", miniTitulos);
         Chunk contcom = new Chunk("  -Contingencias comunes: ", contenidos);
@@ -98,6 +99,8 @@ public class Pdf {
         document.add(parrafo);
         document.add(cnae);
         document.add(parrafo);
+        document.add(parrafo1);
+        document.add(parrafo);
         //Trabajador
         document.add(trabajador);
         document.add(parrafo);
@@ -112,6 +115,8 @@ public class Pdf {
         document.add(grupcot);
         document.add(parrafo);
         document.add(feac);
+        document.add(parrafo);
+        document.add(parrafo1);
         document.add(parrafo);
         //Devengos
         document.add(devengos);
@@ -129,6 +134,8 @@ public class Pdf {
         document.add(parrafo);
         document.add(pagex);
         document.add(parrafo);
+        document.add(parrafo1);
+        document.add(parrafo);
         //Devengos Percepciones no salariales
         document.add(pernosal);
         document.add(parrafo);
@@ -136,6 +143,8 @@ public class Pdf {
         document.add(parrafo);
         //Total devengado
         document.add(totdev);
+        document.add(parrafo);
+        document.add(parrafo1);
         document.add(parrafo);
         //Deducciones
         document.add(deduc);
@@ -162,6 +171,8 @@ public class Pdf {
         document.add(parrafo);
         //Total liquido
         document.add(totliq);
+        document.add(parrafo);
+        document.add(parrafo1);
         document.add(parrafo);
         //Deducciones empresa
         document.add(dedemp);
