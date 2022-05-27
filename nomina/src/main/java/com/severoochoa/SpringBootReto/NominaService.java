@@ -81,40 +81,73 @@ public class NominaService {
     }
 
     public double conseguirSalario(int grupo, int nivel, String letra, String devuelveArchivo) {
-        double salarios = 0;
+        double salarioTrab = 0;
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
         Document doc;
-        Trabajador T1 = new Trabajador();
+
         try {
             builder = factory.newDocumentBuilder();
             doc = (Document) builder.parse(new InputSource(new StringReader(devuelveArchivo)));
             doc.getDocumentElement().normalize();
-            System.out.println("Root : " + doc.getDocumentElement().getNodeName());
-            System.out.println("\nSalarios in the xml: ");
-            NodeList nameList = doc.getElementsByTagName("salarios");
-            NodeList grupoList = doc.getElementsByTagName("grupo_profesional");
-            Node grupos = grupoList.item(T1.getGrupocotizacion() - 1);
+            NodeList grupoProf = doc.getElementsByTagName("grupo_profesional");
 
-            Element grupocot = (Element) grupos;
+            for (int temp = 0; temp < grupoProf.getLength(); temp++) {
 
-            grupocot.getElementsByTagName("salarios");
-            for (int j = 0; j < nameList.getLength(); j++) {
-                Node node = nameList.item(j);
+                Node node = grupoProf.item(temp);
+
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element element = (Element) node;
-                    /* String anyo = element.getAttribute("anyo");
-                                String salario = element.getElementsByTagName("salario").item(0).getTextContent();*/
-                    String prueba = grupocot.getAttribute("grupo");
 
-                    System.out.println(grupocot.getAttribute("grupo"));
+                    Element element = (Element) node;
+
+                    String profesional = element.getAttribute("grupo");
+
+                    if (Integer.parseInt(profesional) == grupo) {
+                        NodeList salarios = element.getElementsByTagName("salarios");
+
+                        for (int temp2 = 0; temp2 < salarios.getLength(); temp2++) {
+                            Node nodonivel = salarios.item(temp2);
+
+                            if (nodonivel.getNodeType() == Node.ELEMENT_NODE) {
+
+                                Element elementoSalario = (Element) nodonivel;
+
+                                NodeList salarioComp = elementoSalario.getElementsByTagName("salario");
+
+                                for (int temp3 = 0; temp3 < salarioComp.getLength(); temp3++) {
+                                    Node nodoSalario = salarioComp.item(temp3);
+
+                                    if (nodoSalario.getNodeType() == Node.ELEMENT_NODE) {
+
+                                        Element atribSalario = (Element) nodoSalario;
+
+                                        String salarioFinal = atribSalario.getAttribute("nivel");
+                                        String letraSalario = atribSalario.getAttribute("letra");
+
+                                        if ((Integer.parseInt(salarioFinal) == nivel) && (letraSalario.equals(letra))) {
+                                            String salarioGeneral = salarioComp.item(temp3).getTextContent();
+
+                                            salarioTrab = Double.parseDouble(salarioGeneral);
+                                            System.out.println(salarioTrab);
+                                            return salarioTrab;
+
+                                        }
+
+                                    }
+
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
         } catch (SAXException | IOException | ParserConfigurationException e) {
             System.err.println("Error! " + e.getMessage());
+
         }
-        System.out.println("grupo: " + grupo + "nivel: " + nivel + "letra: " + letra);
-        return salarios;
+        System.out.println(salarioTrab);
+        return salarioTrab;
     }
+
 }
