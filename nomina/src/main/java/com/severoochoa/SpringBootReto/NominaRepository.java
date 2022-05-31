@@ -5,10 +5,24 @@
  */
 package com.severoochoa.SpringBootReto;
 
+import java.util.List;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 /**
  *
  * @author inmag
  */
-public interface NominaRepository {
+public interface NominaRepository extends JpaRepository<Nomina,Long>{
+    //primer requisito
+    @Override
+    <S extends Nomina> S save (S s);
     
+
+    //tercer requisito
+    @Override
+    List<Nomina> findAll();
+    
+    //segundo requisito
+    Optional<Nomina> findByIdnomina(Long idnomina);
 }

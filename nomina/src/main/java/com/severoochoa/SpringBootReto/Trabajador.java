@@ -159,4 +159,16 @@ public class Trabajador {
     
     @Column(name="categoria")
     private String categoria;
+    
+    @Column(name="tipocontrato")
+    private String tipocontrato;
+
+    public String getTipocontrato() {
+        return tipocontrato;
+    }
+
+    public void setTipocontrato(String tipocontrato) {
+        this.tipocontrato = tipocontrato;
+    }
+    
 }
