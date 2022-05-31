@@ -41,13 +41,11 @@ public class NominaController {
             nivel = t.getNivelcotizacion();
             letra = t.getLetra();
 
-            //service.conseguirSalario(grupo, nivel, letra, devuelveArchivo);
-            //System.out.println(grupo + "-" + nivel + "-" + letra);
+            service.conseguirSalario(grupo, nivel, letra, devuelveArchivo);
+            System.out.println(grupo + "-" + nivel + "-" + letra);
             
-            //System.out.println(service.conseguirSalario(grupo, nivel, letra, devuelveArchivo));
-
         }
-                    service.conseguirSalario(5, 2, "B", devuelveArchivo);
+                   
 
     }
 
