@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/nomina")
 public class NominaController {
+
     @Autowired
     NominaService service;
     
@@ -32,22 +33,24 @@ public class NominaController {
         for (Trabajador t : listaTrabajadores){
             service.generarNomina(t,devuelveArchivo);
         }
+                    service.conseguirSalario(5, 2, "B", devuelveArchivo);
+
     }
 
     @GetMapping("/empresa/{idemp}")
-    public ResponseEntity<Empresa> getEmpresaById(@PathVariable("idemp")Long idemp){
+    public ResponseEntity<Empresa> getEmpresaById(@PathVariable("idemp") Long idemp) {
         Empresa empresa = service.getEmpresaById(idemp);
-        if(empresa == null){
+        if (empresa == null) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(empresa);
         }
     }
-    
+
     @GetMapping("/trabajador/{idtrab}")
-    public ResponseEntity<Trabajador> getTrabajadorById(@PathVariable("idtrab")Long idtrab){
+    public ResponseEntity<Trabajador> getTrabajadorById(@PathVariable("idtrab") Long idtrab) {
         Trabajador trabajador = service.getTrabajadorById(idtrab);
-        if(trabajador == null){
+        if (trabajador == null) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.ok(trabajador);
