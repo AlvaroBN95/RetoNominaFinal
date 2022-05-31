@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.severoochoa.SpringBootReto;
 
 import java.io.BufferedWriter;
@@ -28,21 +24,16 @@ public class NominaController {
     @Autowired
     NominaService service;
     
+    //primer requisito
     @PostMapping("/leerarchivo")
     public void procesaFichero(HttpServletRequest request) throws IOException {
         List<Trabajador> listaTrabajadores = service.dimeTrabajadores();
-        int grupo = 0;
-        int nivel = 0; 
-        String letra = ""; 
         String devuelveArchivo = service.getFileContent(request);
         for (Trabajador t : listaTrabajadores){
-            grupo = t.getGrupocotizacion();
-            nivel = t.getNivelcotizacion();
-            letra = t.getLetra();
-            service.conseguirSalario(grupo, nivel, letra, devuelveArchivo);
+            service.generarNomina(t,devuelveArchivo);
         }
     }
-    
+
     @GetMapping("/empresa/{idemp}")
     public ResponseEntity<Empresa> getEmpresaById(@PathVariable("idemp")Long idemp){
         Empresa empresa = service.getEmpresaById(idemp);
@@ -62,5 +53,26 @@ public class NominaController {
             return ResponseEntity.ok(trabajador);
         }
     }
+  
+   
+  //segundo requisito
+  @GetMapping("/nomina/{idnom}")
+  public ResponseEntity<Nomina> getNominaById(@PathVariable("idnom")Long idnom){
+        Nomina nomina = service.getNominaById(idnom);
+        if(nomina == null){
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.ok(nomina);
+        }
+    }
+  /*
+    //tercer requisito
+  @GetMapping("/nominas")
+  public void getAllNominas() {
+        List<Nomina> listaNominas = service.dimeNominas();
+        for (Nomina nomina : listaNominas){
+            service.generarZIP(service.generarPDF(nomina));
+        }
+    }*/
 
 }
