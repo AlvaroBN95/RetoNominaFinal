@@ -1,8 +1,10 @@
 
 package com.severoochoa.SpringBootReto;
 
+import com.itextpdf.text.DocumentException;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -60,7 +62,7 @@ public class NominaController {
    
   //segundo requisito
   @GetMapping("/nomina/{idnom}")
-  public ResponseEntity<Nomina> getNominaById(@PathVariable("idnom")Long idnom){
+  public ResponseEntity<Nomina> getNominaById(@PathVariable("idnom")Long idnom) throws DocumentException, FileNotFoundException{
         Nomina nomina = service.getNominaById(idnom);
         if(nomina == null){
             return ResponseEntity.noContent().build();
