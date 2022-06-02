@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
+//import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
@@ -17,7 +17,8 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
+
+import java.io.ByteArrayOutputStream;
 
 import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -83,7 +84,7 @@ public class NominaService {
     
     //segundo requisito
     
-     public Nomina getNominaById(Long idnom) throws FileNotFoundException{
+     public Nomina getNominaById(Long idnom) throws FileNotFoundException, DocumentException{
         Optional<Nomina> nomina = repositorioNomina.findByIdnomina(idnom);
         if (nomina.isPresent()) {
             generarPDF(nomina.get());
@@ -94,13 +95,14 @@ public class NominaService {
     }
      
     //segundo requisito
-    public Document generarPDF(Nomina nomina) throws FileNotFoundException{
+    public com.itextpdf.text.Document generarPDF(Nomina nomina) throws FileNotFoundException, DocumentException{
          
         Trabajador trabajador = getTrabajadorById(nomina.getIdtrab());
         Empresa empresa = getEmpresaById(trabajador.getIdemp());
          
-        Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("D:\\Nomina.pdf"));
+        //Document document = new Document();
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        PdfWriter.getInstance((com.itextpdf.text.Document) document, new FileOutputStream("D:\\Nomina.pdf"));
 
         document.open();
         Font titulos = FontFactory.getFont(FontFactory.COURIER, 15, BaseColor.BLACK);
@@ -118,52 +120,52 @@ public class NominaService {
         //Trabajador
         Chunk trabajadores = new Chunk("TRABAJADOR", titulos);
         Chunk nomtrab = new Chunk("-Nombre del trabajador: "+trabajador.getApe1emp() + " " + trabajador.getApe2emp(), contenidos);
-        Chunk niftrab = new Chunk("-NIF: ", contenidos);
-        Chunk nastrab = new Chunk("-Nº afiliacón S.S: ", contenidos);
-        Chunk gruppro = new Chunk("-Grupo profesional: ", contenidos);
-        Chunk grupcot = new Chunk("-Grupo cotización: ", contenidos);
-        Chunk feac = new Chunk("-Fecha de antigüedad: ", contenidos);
+        Chunk niftrab = new Chunk("-NIF: "+ trabajador.getDni(), contenidos);
+        Chunk nastrab = new Chunk("-Nº afiliacón S.S: "+ trabajador.getNaf(), contenidos);
+        Chunk gruppro = new Chunk("-Grupo profesional: "+ trabajador.getGrupoprofesional(), contenidos);
+        Chunk grupcot = new Chunk("-Grupo cotización: " + trabajador.getGrupocotizacion(), contenidos);
+        Chunk feac = new Chunk("-Fecha de antigüedad: " + trabajador.getFechaantiguedad(), contenidos);
         //Devengos 
         Chunk devengos = new Chunk("DEVENGOS", titulos);
         //Percepciones salariales
         Chunk persal = new Chunk("·Percepciones salariales: ", miniTitulos);
-        Chunk salba = new Chunk(" -Salario Base: ", contenidos);
+        Chunk salba = new Chunk(" -Salario Base: "+ nomina.getSalariobase(), contenidos);
         Chunk compsa = new Chunk(" -Complementos salariales: ", contenidos);
-        Chunk compsa1 = new Chunk("  -Plus transporte: ", contenidos);
-        Chunk compsa2 = new Chunk("  -Complementos salariales: ", contenidos);
-        Chunk pagex = new Chunk(" -Pagas extraordinarias: ", contenidos);
+        Chunk compsa1 = new Chunk("  -Plus transporte: "+nomina.getGratificaciones() , contenidos);
+        //Chunk compsa2 = new Chunk("  -Complementos salariales: "+nomina.getCctrab() , contenidos); ??
+        Chunk pagex = new Chunk(" -Pagas extraordinarias: "+nomina.getPagasextra(), contenidos);
         //Devengos Percepciones no salariales
         Chunk pernosal = new Chunk("·Percepciones no salariales: ", miniTitulos);
-        Chunk dieta = new Chunk(" -Dieta: ", contenidos);
+        Chunk dieta = new Chunk(" -Dieta: "+ nomina.getDieta(), contenidos);
         //Total devengado
-        Chunk totdev = new Chunk("·Total devengado: ", miniTitulos);
+        Chunk totdev = new Chunk("·Total devengado: "+nomina.getTotaldevengado(), miniTitulos);
         //Deducciones
         Chunk deduc = new Chunk("DEDUCCIONES", titulos);
         //Deducciones trabajador
         Chunk segsoc = new Chunk(" ·Deducciones del trabajador a la seguridad social: ", miniTitulos);
-        Chunk contcom = new Chunk("  -Contingencias comunes: ", contenidos);
-        Chunk desempleo = new Chunk("  -Desempleo: ", contenidos);
-        Chunk fp = new Chunk("  -Formación profesional: ", contenidos);
-        Chunk horasex = new Chunk("  -Horas extraordinarias ordinarias: ", contenidos);
-        Chunk horasexfu = new Chunk("  -Horas extraordinarias por fuerza mayor: ", contenidos);
+        Chunk contcom = new Chunk("  -Contingencias comunes: "+ nomina.getCctrab(), contenidos);
+        Chunk desempleo = new Chunk("  -Desempleo: "+nomina.getDestrab(), contenidos);
+        Chunk fp = new Chunk("  -Formación profesional: "+ nomina.getFptrab(), contenidos);
+        Chunk horasex = new Chunk("  -Horas extraordinarias ordinarias: "+ nomina.getHetrab(), contenidos);
+        Chunk horasexfu = new Chunk("  -Horas extraordinarias por fuerza mayor: "+nomina.getHetrabfm(), contenidos);
         Chunk hacienda = new Chunk(" ·Deducciones del trabajador a hacienda: ", miniTitulos);
-        Chunk irpf = new Chunk("  -IRPF: ", contenidos);
+        Chunk irpf = new Chunk("  -IRPF: "+nomina.getIrpf(), contenidos);
         //Total a deducir
-        Chunk totded = new Chunk(" ·Total a deducir: ", miniTitulos);
+        Chunk totded = new Chunk(" ·Total a deducir: "+nomina.getTotaldeducir(), miniTitulos);
         //Total liquido
-        Chunk totliq = new Chunk(" ·Liquido total a percibir: ", miniTitulos);
+        Chunk totliq = new Chunk(" ·Liquido total a percibir: "+ nomina.getTotalliquido(), miniTitulos);
         //Deducciones empresa
         Chunk dedemp = new Chunk(" ·Deducciones de la empresa: ", miniTitulos);
-        Chunk contcomemp = new Chunk("  -Contingencias comunes: ", contenidos);
-        Chunk atyet = new Chunk("  -AT y ET: ", contenidos);
-        Chunk desempleoemp = new Chunk("  -Desempleo: ", contenidos);
-        Chunk fpemp = new Chunk("  -Formación profesional: ", contenidos);
-        Chunk horasexemp = new Chunk("  -Horas extraordinarias ordinarias: ", contenidos);
-        Chunk horasexfuemp = new Chunk("  -Horas extraordinarias por fuerza mayor: ", contenidos);
-        Chunk fogasa = new Chunk("  -Fogasa: ", contenidos);
-        Chunk totdedemp = new Chunk(" ·Total a deducir: ", miniTitulos);
+        Chunk contcomemp = new Chunk("  -Contingencias comunes: "+nomina.getCcEmp(), contenidos);
+        Chunk atyet = new Chunk("  -AT y ET: "+ nomina.getAtep(), contenidos);
+        Chunk desempleoemp = new Chunk("  -Desempleo: " + nomina.getDesemp(), contenidos);
+        Chunk fpemp = new Chunk("  -Formación profesional: "+ nomina.getFpemp(), contenidos);
+        Chunk horasexemp = new Chunk("  -Horas extraordinarias ordinarias: "+ nomina.getHeemp(), contenidos);
+        Chunk horasexfuemp = new Chunk("  -Horas extraordinarias por fuerza mayor: "+ nomina.getHeempfm(), contenidos);
+        Chunk fogasa = new Chunk("  -Fogasa: "+ nomina.getFogasa(), contenidos);
+        Chunk totdedemp = new Chunk(" ·Total aportación de la empresa: "+ nomina.getTotalaporemp(), miniTitulos);
         //Empresa
-        document.add(empresa);
+        document.add(empresas);
         document.add(parrafo);
         document.add(nomempr);
         document.add(parrafo);
@@ -178,7 +180,7 @@ public class NominaService {
         document.add(parrafo1);
         document.add(parrafo);
         //Trabajador
-        document.add(trabajador);
+        document.add(trabajadores);
         document.add(parrafo);
         document.add(nomtrab);
         document.add(parrafo);
@@ -206,7 +208,7 @@ public class NominaService {
         document.add(parrafo);
         document.add(compsa1);
         document.add(parrafo);
-        document.add(compsa2);
+        //document.add(compsa2);
         document.add(parrafo);
         document.add(pagex);
         document.add(parrafo);
@@ -273,9 +275,7 @@ public class NominaService {
         document.add(parrafo);
         //final
         document.close();
-    
-        return document; 
-
+        return document;
      }
      
      //tercer requisito
@@ -348,7 +348,7 @@ public class NominaService {
         
         double plusTransporte = getPlusTransporte(archivo)*diasTrabajados; 
         double gratificaciones = plusTransporte;
-        nomina.setGratificaciones(gratificaciones);
+        nomina.setGratificaciones(gratificaciones); //por ahora solo tenemos el plusTransporte si hay que añadir más esto hay que cambiarlo
         
         double pagasExtraPro = salarioBase*3/12;
         nomina.setPagasextra(pagasExtraPro);
@@ -493,11 +493,8 @@ public class NominaService {
                                             salarioTrab = Double.parseDouble(salarioGeneral);
                                             System.out.println(salarioTrab);
                                             return salarioTrab;
-
                                         }
-
                                     }
-
                                 }
                             }
                         }
@@ -538,7 +535,7 @@ public class NominaService {
         }
     
     //primer requisito MEJORADO: poner nombres genéricos y dejar en un solo método para transporte y dieta
-    public double getElemento(String xml){
+    public double getElemento(String xml, String element){
         String elemento ="";
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
@@ -547,7 +544,7 @@ public class NominaService {
             builder = factory.newDocumentBuilder();
             doc = (Document) builder.parse(new InputSource(new StringReader(xml)));
             doc.getDocumentElement().normalize();
-            NodeList valorElemento = doc.getElementsByTagName("plus_transporte");
+            NodeList valorElemento = doc.getElementsByTagName(element);
             elemento = valorElemento.item(0).getTextContent();
             } catch (SAXException | IOException | ParserConfigurationException e) {
             System.err.println("Error! " + e.getMessage());
