@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -37,17 +38,14 @@ public class NominaController {
             service.generarNomina(t,devuelveArchivo);
         }
     }
-
-    @GetMapping("/empresa/{idemp}")
-    public ResponseEntity<Empresa> getEmpresaById(@PathVariable("idemp") Long idemp) {
-        Empresa empresa = service.getEmpresaById(idemp);
-        if (empresa == null) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(empresa);
-        }
+    
+    //extra
+  @GetMapping("/empresa/{idemp}")
+    public void getEmpresaById(@PathVariable("idemp") Long idemp) {
+        service.getZIPEmpresa(idemp);
     }
-
+    
+    //extra
     @GetMapping("/trabajador/{idtrab}")
     public ResponseEntity<Trabajador> getTrabajadorById(@PathVariable("idtrab") Long idtrab) {
         Trabajador trabajador = service.getTrabajadorById(idtrab);
@@ -69,14 +67,14 @@ public class NominaController {
             return ResponseEntity.ok(nomina);
         }
     }
-  /*
+  
     //tercer requisito
   @GetMapping("/nominas")
-  public void getAllNominas() {
+  public void getAllNominas() throws FileNotFoundException, DocumentException {
         List<Nomina> listaNominas = service.dimeNominas();
         for (Nomina nomina : listaNominas){
-            service.generarZIP(service.generarPDF(nomina));
+            service.generarZIP((Document) service.generarPDF(nomina));
         }
-    }*/
+    }
 
 }
