@@ -127,6 +127,17 @@ public class Trabajador {
         this.categoria = categoria;
     }
 
+    @Column(name="nomtrab")
+    private String nomtrab;
+
+    public String getNomtrab() {
+        return nomtrab;
+    }
+
+    public void setNomtrab(String nomtrab) {
+        this.nomtrab = nomtrab;
+    }
+    
     @Column(name="ape1trab")
     private String ape1emp;
     
