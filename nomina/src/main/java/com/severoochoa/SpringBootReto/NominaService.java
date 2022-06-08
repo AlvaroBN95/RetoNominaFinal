@@ -91,8 +91,8 @@ public class NominaService {
         }
     }
     
-    //segundo requisito
     
+    //segundo requisito
      public Nomina getNominaById(Long idnom) throws FileNotFoundException, DocumentException{
         Optional<Nomina> nomina = repositorioNomina.findByIdnomina(idnom);
         if (nomina.isPresent()) {
@@ -176,7 +176,7 @@ public class NominaService {
          } else {
             porcentaje = 1.55;
          }
-        Chunk desempleo = new Chunk("     -Desempleo:             " + porcentaje + "%         "+nomina.getDestrab(), contenidos);
+        Chunk desempleo = new Chunk("     -Desempleo:             " + porcentaje + "%        "+nomina.getDestrab(), contenidos);
         Chunk fp = new Chunk("     -Formación profesional: 0.10%        "+ nomina.getFptrab(), contenidos);
         Chunk horasex = new Chunk("     -Horas extraordinarias ordinarias: "+ nomina.getHetrab(), contenidos);
         Chunk horasexfu = new Chunk("     -Horas extraordinarias por fuerza mayor: "+nomina.getHetrabfm(), contenidos);
@@ -189,8 +189,8 @@ public class NominaService {
         
             //Deducciones empresa
         Chunk dedemp = new Chunk(" ·Deducciones de la empresa: ", miniTitulos);
-        Chunk contcomemp = new Chunk("  -Contingencias comunes: 23.6%         "+nomina.getCcEmp(), contenidos);
-        Chunk atyet = new Chunk("  -AT y ET:                1.5%          "+ nomina.getAtep(), contenidos);
+        Chunk contcomemp = new Chunk("  -Contingencias comunes: 23.6%        "+nomina.getCcEmp(), contenidos);
+        Chunk atyet = new Chunk("  -AT y ET:                1.5%         "+ nomina.getAtep(), contenidos);
         double porcentajeEmpresa = 0;
         if ("temporal".equals(trabajador.getTipocontrato())){
             porcentajeEmpresa = 6.7;
@@ -433,7 +433,7 @@ public class NominaService {
         /********************DATOS TRABAJADOR**************************************************/
 
         nomina.setIdtrab(t.getIdtrab());
-        nomina.setCategoria(t.getCategoria()); //preguntar 
+        nomina.setCategoria(t.getCategoria()); 
         nomina.setGrupocotizacion(t.getGrupocotizacion());
         nomina.setGrupoprofesional(t.getGrupoprofesional());
         nomina.setNivelcotizacion(t.getNivelcotizacion());
@@ -450,11 +450,13 @@ public class NominaService {
         int numeroDiasInicio;
         int numeroDiasFin;
         do{
+        //conseguir un mes aleatorio 
         numeroMes = (int)(Math.random()*(12)+1);
         diasMes = buscarDiasMes(numeroMes);
-       
+        //conseguir un día aleatorio, entre 1 y los días máximos del mes 
         numeroDiasInicio = (int)(Math.random()*(diasMes)+1);
         numeroDiasFin = (int)(Math.random()*(diasMes)+1);
+        //requisito: la fecha de inicio anterior a la de fin
         if (numeroDiasFin<numeroDiasInicio){
             int control;
             control=numeroDiasFin;
@@ -464,6 +466,7 @@ public class NominaService {
         fechaInicio = "2022-"+numeroMes+"-"+numeroDiasInicio;
         SimpleDateFormat dateFormat = new SimpleDateFormat ("yyyy-MM-dd");
         inicio = dateFormat.parse(fechaInicio);
+        //repetir código hasta que la fecha de inicio sea posterior a la fecha de antigüedad
         } while(inicio.before(antiguedad.parse(t.getFechaantiguedad())));
         
         nomina.setFechainicio(fechaInicio);
@@ -471,39 +474,47 @@ public class NominaService {
         nomina.setFechafin(fechaFin);
         int diasTrabajados=(numeroDiasFin-numeroDiasInicio)+1;
         nomina.setDiastrabajados(diasTrabajados);
-         
+        
+        //salario anual extraído del XML
         double salarioAnual = conseguirSalario(t.getGrupocotizacion(), t.getNivelcotizacion(), t.getLetra(),archivo); 
+        //salario base, dividido entre 15 (12 meses del año + 3 pagas) 
         double salarioBase=(salarioAnual/15)*diasTrabajados/diasMes;
         nomina.setSalariobase(salarioBase);
         
+        //plus transporte: sacar un número aleatorio, entre 1 y 10, con la misma probabilidad
         double plusTransporte;
         int aleatorio = (int)(Math.random()*(10)+1);
         if ( aleatorio <=5) {
-            //plusTransporte = dimePlusTransporte(archivo)*diasTrabajados;
+            //extraemos valor del XML para calcular el total de plus transporte
             plusTransporte = getElemento(archivo, "plus_transporte")*diasTrabajados;
         } else{
             plusTransporte = 0;
         }
         nomina.setPlustransporte(plusTransporte);
         
+        //capacitación Profesional
         double capacitacionProfesional;
         int aleatorio2 = (int)(Math.random()*(10)+1);
         if ( aleatorio2 <=5) {
-            capacitacionProfesional = 20/100*salarioBase;
+            capacitacionProfesional = 20*salarioBase/100;
         } else{
             capacitacionProfesional = 0;
         }
         nomina.setCapacitacionprofesional(capacitacionProfesional);
         
+        //complementos, suma de todos los pluses del convenio
         double complementos = plusTransporte + capacitacionProfesional;
         nomina.setComplementos(complementos); 
         
-        double pagasExtraPro = salarioBase*3/12; //todas las pagas extras se prorrotean
+        //pagas extra, todas prorrateadas. En este convenio son 3
+        double pagasExtraPro = salarioBase*3/12; 
         nomina.setPagasextra(pagasExtraPro);
         
+        //horas extra aleatorias, un valor pequeño como máximo para tener coherencia si salen pocos días trabajados
         double horasExtra = (int)(Math.random()*(10));
         nomina.setHorasextra(horasExtra);
         
+        //horas extra fuerza mayor
         double horasExtraFM; //es más probable que no tengas que que tengas 
         int aleatorio3 = (int)(Math.random()*(10)+1);
         if ( aleatorio3 <=3) {
@@ -516,10 +527,13 @@ public class NominaService {
             /*******Percepciones no salariales**************/
         int diasConDieta;
         double dieta;
+        int aleatorio4;
+        //generar un aleatorio4 para que haya la misma probabilidad de tener o no dieta, 
+        //en el caso de que haya, otro aleatorio establece los días con dieta, que no serán superiores a los trabajados
          do{
-            //dieta= getDieta(archivo)*diasConDieta;
-            diasConDieta =(int)(Math.random()*(diasTrabajados)+1); 
-            if (diasConDieta >=5){
+            aleatorio4 =(int)(Math.random()*(10)+1); 
+            diasConDieta =(int)(Math.random()*(diasTrabajados)+1);
+            if (aleatorio4 <=5){
             dieta= getElemento(archivo, "dieta_media")*diasConDieta;
             } else{
             dieta=0;
@@ -539,10 +553,13 @@ public class NominaService {
         double bccp = bccc + bhe;
        
                /****** tipo de contrato para hallar el desempleo ***********/
-        String tipoContrato = t.getTipocontrato() ;
-        int porcentajeIRPF = (int)(Math.random()*(20)+2); //aleatorio, en nuestro convenio solo tiene sentido entre 2 y 20%
+        //tipo de contrato extraido del xml
+        String tipoContrato = t.getTipocontrato();
+        //IRPF, se genera un aleatorio,en nuestro convenio solo tiene sentido entre 2 y 20%
+        int porcentajeIRPF = (int)(Math.random()*(20)+2);
         double desTrab=0;
         double desEmp=0;
+        //en función del tipo de contrato, el desempleo del trabajador y de la empresa cambian
          if ("temporal".equals(tipoContrato)){
              //trabajador
              desTrab = bccp * 1.6/100;
@@ -560,35 +577,49 @@ public class NominaService {
          }
          
                    /*******deducciones trabajador**********/
+         //contingencias comunes
          double ccTrab = bccc * 4.7/100;
          nomina.setCctrab(ccTrab);
+         //formación profesional
          double fpTrab = bccp * 0.1/100;
          nomina.setFptrab(fpTrab);
+         //horas extra
          double horasExtraTrab = bhe * 4.7/100;
          nomina.setHetrab(horasExtraTrab);
+         //horas extra fuerza mayor
          double heFMtrab = bhe * 2/100;
          nomina.setHetrabfm(heFMtrab);
+         //irpf
          double irpf = bccp * porcentajeIRPF/100;
          nomina.setIrpf(irpf);
                      
               /**********total a deducir trabajador**********/
+        //total SS
         double totalSeguridadSocialTrab=(ccTrab+fpTrab+horasExtraTrab+heFMtrab+desTrab);
-        double totalHacienda = irpf;  
+        //total hacienda
+        double totalHacienda = irpf;
+        //total a deducir = SS + Hacienda
         double totalDeduccion = totalSeguridadSocialTrab + totalHacienda;
         nomina.setTotaldeducir(totalDeduccion);
         nomina.setTotalliquido(totalDevengado-totalDeduccion);
         
               /**********deducciones empresa*****************/
+        //contingencias comunes
         double ccEmp = bccc * 23.6/100;
         nomina.setCcEmp(ccEmp);
+        //horas extra
         double horasExtraEmp = bhe * 23.6/200; 
         nomina.setHeemp(horasExtraEmp);
+        //horas extra fuerza mayor
         double heFMEmp = bhe * 12/100;
         nomina.setHeempfm(heFMEmp);
+        //fogasa
         double fogasa = bccp * 0.2/100;
         nomina.setFogasa(fogasa);
+        //at-ep
         double atep = bccp *1.5/100; //CNAE propio de la empresa
         nomina.setAtep(atep);
+        //formación profesional
         double formacionEmp = bccp * 0.6/100;
         nomina.setFpemp(formacionEmp);
         
@@ -602,6 +633,7 @@ public class NominaService {
     //primer requisito
    public double conseguirSalario(int grupo, int nivel, String letra, String devuelveArchivo) {
         double salarioTrab = 0;
+        //crear nueva instancia del documento
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
         Document doc;
@@ -609,25 +641,28 @@ public class NominaService {
         try {
             builder = factory.newDocumentBuilder();
             doc = (Document) builder.parse(new InputSource(new StringReader(devuelveArchivo)));
+            //verificar el documento y que no haya problemas
             doc.getDocumentElement().normalize();
+            //que busque todos los elementos con la etiqueta grupo_profesional
             NodeList grupoProf = doc.getElementsByTagName("grupo_profesional");
-
+            //recorrer dentro de grupo_profesional
             for (int temp = 0; temp < grupoProf.getLength(); temp++) {
-
+                //verifica que el nodo exista, opcional
                 Node node = grupoProf.item(temp);
-
+                
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
-
+                    //el nodo se transforma a un elemento
                     Element element = (Element) node;
-
+                    //seleccionamos atributo grupo dentro de grupo profesional
                     String profesional = element.getAttribute("grupo");
-
+                    //conversión a entero y comparar con la base de datos
                     if (Integer.parseInt(profesional) == grupo) {
+                        //coger los salarios
                         NodeList salarios = element.getElementsByTagName("salarios");
-
+                        //recorrer los salarios
                         for (int temp2 = 0; temp2 < salarios.getLength(); temp2++) {
                             Node nodonivel = salarios.item(temp2);
-
+                            
                             if (nodonivel.getNodeType() == Node.ELEMENT_NODE) {
 
                                 Element elementoSalario = (Element) nodonivel;
@@ -643,13 +678,11 @@ public class NominaService {
 
                                         String salarioFinal = atribSalario.getAttribute("nivel");
                                         String letraSalario = atribSalario.getAttribute("letra");
-
+                                        //comparar los atributos con la base de datos y en caso de ser correctos se añaden a una variable para hacer el return
                                         if ((Integer.parseInt(salarioFinal) == nivel) && (letraSalario.equals(letra))) {
                                             String salarioGeneral = salarioComp.item(temp3).getTextContent();
 
-                                            salarioTrab = Double.parseDouble(salarioGeneral);
-                                            System.out.println(salarioTrab);
-                                            return salarioTrab;
+                                            salarioTrab = Double.parseDouble(salarioGeneral); 
                                         }
                                     }
                                 }
@@ -658,17 +691,15 @@ public class NominaService {
                     }
                 }
             }
-
         } catch (SAXException | IOException | ParserConfigurationException e) {
             System.err.println("Error! " + e.getMessage());
-
         }
-        System.out.println(salarioTrab);
         return salarioTrab;
     }
 
     
     //primer requisito
+    //según el mes que le pases te devuelve los dias máximos 
     public int buscarDiasMes(int mes){
             int dias=0;
             switch(mes){
@@ -691,7 +722,8 @@ public class NominaService {
             return dias;
         }
     
-    //primer requisito 
+    //primer requisito
+    //extrae el valor de los pluses del XML
     public double getElemento(String xml, String element){
         String elemento ="";
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -748,6 +780,11 @@ public class NominaService {
         double dietaCantidad=Double.parseDouble(dieta);
         return dietaCantidad;
 }*/
+    
+    //extra
+    public void getZIPEmpresa (Long idemp){
+        
+    }
     }
 
 
