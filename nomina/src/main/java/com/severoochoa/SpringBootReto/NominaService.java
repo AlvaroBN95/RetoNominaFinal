@@ -27,6 +27,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -96,27 +100,31 @@ public class NominaService {
      
     //segundo requisito
     public com.itextpdf.text.Document generarPDF(Nomina nomina) throws FileNotFoundException, DocumentException{
-         
+        //crear el objeto trabajador y nómina al que pertenece ese id 
         Trabajador trabajador = getTrabajadorById(nomina.getIdtrab());
         Empresa empresa = getEmpresaById(trabajador.getIdemp());
-         
-        //Document document = new Document();
+        
+        //creamos el pdf con el nombre y fecha de la nómina del trabajador
         com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-        PdfWriter.getInstance((com.itextpdf.text.Document) document, new FileOutputStream("D:\\Nomina.pdf"));
-
+        PdfWriter.getInstance((com.itextpdf.text.Document) document, new FileOutputStream("D:\\" + trabajador.getNomtrab()+"_"+ nomina.getFechafin()+".pdf"));
+        
+        //inicio
         document.open();
+        //asignamos estilos
         Font titulos = FontFactory.getFont(FontFactory.COURIER, 15, BaseColor.BLACK);
         Font miniTitulos = FontFactory.getFont(FontFactory.COURIER, 12, BaseColor.BLACK);
         Font contenidos = FontFactory.getFont(FontFactory.COURIER, 10, BaseColor.BLACK);
         Paragraph parrafo = new Paragraph();
         Chunk parrafo1 = new Chunk(" ", titulos);
+        
+        //Añadimos los campos requeridos en cualquier nómina y los dotamos de formato
         //Empresa
         Chunk empresas = new Chunk("EMPRESA", titulos);
         Chunk nomempr = new Chunk("-Nombre empresa: " + empresa.getNomEmp(), contenidos);
         Chunk domicilioemp = new Chunk("-Domicilio de la empresa: " + empresa.getDomicilio(), contenidos);
         Chunk cif = new Chunk("-CIF: "+ empresa.getCif(), contenidos);
         Chunk ccc = new Chunk("-CCC: " + empresa.getCcc(), contenidos);
-        //Chunk cnae = new Chunk("-CNAE: " + empresa., contenidos);
+        
         //Trabajador
         Chunk trabajadores = new Chunk("TRABAJADOR", titulos);
         Chunk nomtrab = new Chunk("-Nombre del trabajador: "+trabajador.getApe1emp() + " " + trabajador.getApe2emp(), contenidos);
@@ -125,46 +133,74 @@ public class NominaService {
         Chunk gruppro = new Chunk("-Grupo profesional: "+ trabajador.getGrupoprofesional(), contenidos);
         Chunk grupcot = new Chunk("-Grupo cotización: " + trabajador.getGrupocotizacion(), contenidos);
         Chunk feac = new Chunk("-Fecha de antigüedad: " + trabajador.getFechaantiguedad(), contenidos);
+        
+        //Tierra de nadie
+        Chunk perliq = new Chunk("-Periodo de liquidación: "+ nomina.getFechainicio()+" - "+nomina.getFechafin(), contenidos);
+        Chunk totdias = new Chunk("           Total de días: "+ nomina.getDiastrabajados(), contenidos);
+        
         //Devengos 
         Chunk devengos = new Chunk("DEVENGOS", titulos);
-        //Percepciones salariales
+           //Percepciones salariales
         Chunk persal = new Chunk("·Percepciones salariales: ", miniTitulos);
-        Chunk salba = new Chunk(" -Salario Base: "+ nomina.getSalariobase(), contenidos);
-        Chunk compsa = new Chunk(" -Complementos salariales: ", contenidos);
-        Chunk compsa1 = new Chunk("  -Plus transporte: "+nomina.getGratificaciones() , contenidos);
-        //Chunk compsa2 = new Chunk("  -Complementos salariales: "+nomina.getCctrab() , contenidos); ??
-        Chunk pagex = new Chunk(" -Pagas extraordinarias: "+nomina.getPagasextra(), contenidos);
-        //Devengos Percepciones no salariales
+        Chunk salba = new Chunk("     -Salario Base: "+ nomina.getSalariobase(), contenidos);
+        Chunk compsa = new Chunk("     -Complementos salariales: "+ nomina.getComplementos(), contenidos);
+        Chunk compsa1 = new Chunk("          *Plus transporte: "+nomina.getPlustransporte() , contenidos);
+        Chunk compsa2 = new Chunk("          *Capacitación profesional: "+nomina.getCapacitacionprofesional() , contenidos);
+        Chunk pagex = new Chunk("     -Pagas extraordinarias prorroteadas: "+nomina.getPagasextra(), contenidos);
+           //Percepciones no salariales
         Chunk pernosal = new Chunk("·Percepciones no salariales: ", miniTitulos);
-        Chunk dieta = new Chunk(" -Dieta: "+ nomina.getDieta(), contenidos);
+        Chunk dieta = new Chunk("     -Dieta: "+ nomina.getDieta(), contenidos);
         //Total devengado
         Chunk totdev = new Chunk("·Total devengado: "+nomina.getTotaldevengado(), miniTitulos);
+        
+        //Tierra de nadie
+        Chunk firmaemp = new Chunk("Firma y sello de la empresa: ", contenidos);
+        Chunk fecact = new Chunk("               Fecha: "+LocalDate.now(), contenidos);
+        Chunk firmtrab = new Chunk("               Recibí: ", contenidos);
+        
         //Deducciones
         Chunk deduc = new Chunk("DEDUCCIONES", titulos);
-        //Deducciones trabajador
+        
+            //Deducciones trabajador
         Chunk segsoc = new Chunk(" ·Deducciones del trabajador a la seguridad social: ", miniTitulos);
-        Chunk contcom = new Chunk("  -Contingencias comunes: "+ nomina.getCctrab(), contenidos);
-        Chunk desempleo = new Chunk("  -Desempleo: "+nomina.getDestrab(), contenidos);
-        Chunk fp = new Chunk("  -Formación profesional: "+ nomina.getFptrab(), contenidos);
-        Chunk horasex = new Chunk("  -Horas extraordinarias ordinarias: "+ nomina.getHetrab(), contenidos);
-        Chunk horasexfu = new Chunk("  -Horas extraordinarias por fuerza mayor: "+nomina.getHetrabfm(), contenidos);
+        Chunk contcom = new Chunk("     -Contingencias comunes: 4.7%        "+ nomina.getCctrab(), contenidos);
+        double porcentaje = 0;
+         if ("temporal".equals(trabajador.getTipocontrato())){
+            porcentaje = 1.60;
+         } else {
+            porcentaje = 1.55;
+         }
+        Chunk desempleo = new Chunk("     -Desempleo:             " + porcentaje + "%         "+nomina.getDestrab(), contenidos);
+        Chunk fp = new Chunk("     -Formación profesional: 0.10%        "+ nomina.getFptrab(), contenidos);
+        Chunk horasex = new Chunk("     -Horas extraordinarias ordinarias: "+ nomina.getHetrab(), contenidos);
+        Chunk horasexfu = new Chunk("     -Horas extraordinarias por fuerza mayor: "+nomina.getHetrabfm(), contenidos);
         Chunk hacienda = new Chunk(" ·Deducciones del trabajador a hacienda: ", miniTitulos);
-        Chunk irpf = new Chunk("  -IRPF: "+nomina.getIrpf(), contenidos);
-        //Total a deducir
+        Chunk irpf = new Chunk("     -IRPF: "+nomina.getIrpf(), contenidos);
+                //Total a deducir
         Chunk totded = new Chunk(" ·Total a deducir: "+nomina.getTotaldeducir(), miniTitulos);
-        //Total liquido
+                //Total liquido
         Chunk totliq = new Chunk(" ·Liquido total a percibir: "+ nomina.getTotalliquido(), miniTitulos);
-        //Deducciones empresa
+        
+            //Deducciones empresa
         Chunk dedemp = new Chunk(" ·Deducciones de la empresa: ", miniTitulos);
-        Chunk contcomemp = new Chunk("  -Contingencias comunes: "+nomina.getCcEmp(), contenidos);
-        Chunk atyet = new Chunk("  -AT y ET: "+ nomina.getAtep(), contenidos);
-        Chunk desempleoemp = new Chunk("  -Desempleo: " + nomina.getDesemp(), contenidos);
-        Chunk fpemp = new Chunk("  -Formación profesional: "+ nomina.getFpemp(), contenidos);
+        Chunk contcomemp = new Chunk("  -Contingencias comunes: 23.6%         "+nomina.getCcEmp(), contenidos);
+        Chunk atyet = new Chunk("  -AT y ET:                1.5%          "+ nomina.getAtep(), contenidos);
+        double porcentajeEmpresa = 0;
+        if ("temporal".equals(trabajador.getTipocontrato())){
+            porcentajeEmpresa = 6.7;
+         } else {
+            porcentajeEmpresa = 5.5;
+         }
+        Chunk desempleoemp = new Chunk("  -Desempleo:              " +porcentajeEmpresa+ "%         "+ nomina.getDesemp(), contenidos);
+        Chunk fpemp = new Chunk("  -Formación profesional:  0.6%          "+ nomina.getFpemp(), contenidos);
         Chunk horasexemp = new Chunk("  -Horas extraordinarias ordinarias: "+ nomina.getHeemp(), contenidos);
         Chunk horasexfuemp = new Chunk("  -Horas extraordinarias por fuerza mayor: "+ nomina.getHeempfm(), contenidos);
-        Chunk fogasa = new Chunk("  -Fogasa: "+ nomina.getFogasa(), contenidos);
+        Chunk fogasa = new Chunk("  -FOGASA:                 0.2%          "+ nomina.getFogasa(), contenidos);
+                //Total aportación empresa
         Chunk totdedemp = new Chunk(" ·Total aportación de la empresa: "+ nomina.getTotalaporemp(), miniTitulos);
-        //Empresa
+        
+        //Adición al pdf
+            //Empresa
         document.add(empresas);
         document.add(parrafo);
         document.add(nomempr);
@@ -175,11 +211,10 @@ public class NominaService {
         document.add(parrafo);
         document.add(ccc);
         document.add(parrafo);
-        //document.add(cnae);
         document.add(parrafo);
         document.add(parrafo1);
         document.add(parrafo);
-        //Trabajador
+            //Trabajador
         document.add(trabajadores);
         document.add(parrafo);
         document.add(nomtrab);
@@ -196,10 +231,16 @@ public class NominaService {
         document.add(parrafo);
         document.add(parrafo1);
         document.add(parrafo);
-        //Devengos
+            //Tierra de nadie
+        document.add(perliq);
+        document.add(totdias);
+        document.add(parrafo);
+        document.add(parrafo1);
+        document.add(parrafo);
+            //Devengos
         document.add(devengos);
         document.add(parrafo);
-        //Percepciones salariales
+                //Percepciones salariales
         document.add(persal);
         document.add(parrafo);
         document.add(salba);
@@ -208,26 +249,29 @@ public class NominaService {
         document.add(parrafo);
         document.add(compsa1);
         document.add(parrafo);
-        //document.add(compsa2);
+        document.add(compsa2);
+        document.add(parrafo);
         document.add(parrafo);
         document.add(pagex);
         document.add(parrafo);
         document.add(parrafo1);
         document.add(parrafo);
-        //Devengos Percepciones no salariales
+                //Percepciones no salariales
         document.add(pernosal);
         document.add(parrafo);
         document.add(dieta);
         document.add(parrafo);
-        //Total devengado
+        document.add(parrafo1);
+        document.add(parrafo);
+                //Total devengado
         document.add(totdev);
         document.add(parrafo);
         document.add(parrafo1);
         document.add(parrafo);
-        //Deducciones
+            //Deducciones
         document.add(deduc);
         document.add(parrafo);
-        //Deducciones trabajador
+                //Deducciones trabajador
         document.add(segsoc);
         document.add(parrafo);
         document.add(contcom);
@@ -244,15 +288,20 @@ public class NominaService {
         document.add(parrafo);
         document.add(irpf);
         document.add(parrafo);
-        //Total a deducir
+        document.add(parrafo1);
+        document.add(parrafo);
+                //Total a deducir
         document.add(totded);
         document.add(parrafo);
-        //Total liquido
+                //Total liquido
         document.add(totliq);
         document.add(parrafo);
         document.add(parrafo1);
         document.add(parrafo);
-        //Deducciones empresa
+        document.add(parrafo);
+        document.add(parrafo1);
+        document.add(parrafo);
+            //Deducciones empresa
         document.add(dedemp);
         document.add(parrafo);
         document.add(contcomemp);
@@ -263,16 +312,30 @@ public class NominaService {
         document.add(parrafo);
         document.add(fpemp);
         document.add(parrafo);
+        document.add(fogasa);
+        document.add(parrafo);
         document.add(horasexemp);
         document.add(parrafo);
         document.add(horasexfuemp);
         document.add(parrafo);
-        document.add(fogasa);
+        document.add(parrafo1);
         document.add(parrafo);
-        document.add(horasexfuemp);
-        document.add(parrafo);
+            //Total empresa
         document.add(totdedemp);
         document.add(parrafo);
+        document.add(parrafo1);
+        document.add(parrafo);
+            //Tierra de nadie
+        document.add(parrafo);
+        document.add(parrafo1);
+        document.add(parrafo);
+        document.add(parrafo);
+        document.add(parrafo1);
+        document.add(parrafo);
+        document.add(firmaemp);
+        document.add(fecact);
+        document.add(firmtrab);
+        
         //final
         document.close();
         return document;
@@ -305,7 +368,7 @@ public class NominaService {
     }
     
     //primer requisito
-    public void generarNomina(Trabajador t, String archivo){
+    public void generarNomina(Trabajador t, String archivo) throws ParseException{
         Nomina nomina = new Nomina();
         
         /********************DATOS EMPRESA****************************************************/
@@ -316,7 +379,7 @@ public class NominaService {
         /********************DATOS TRABAJADOR**************************************************/
 
         nomina.setIdtrab(t.getIdtrab());
-        nomina.setCategoria(t.getCategoria());
+        nomina.setCategoria(t.getCategoria()); //preguntar 
         nomina.setGrupocotizacion(t.getGrupocotizacion());
         nomina.setGrupoprofesional(t.getGrupoprofesional());
         nomina.setNivelcotizacion(t.getNivelcotizacion());
@@ -325,64 +388,104 @@ public class NominaService {
        /*********************DEVENGOS***************************************************/
 
                  /**********Percepciones salariales*********************/
-        int numeroMes = (int)(Math.random()*(12)+1);
-        int diasMes = buscarDiasMes(numeroMes);
+        Date inicio;
+        String fechaInicio;
+        SimpleDateFormat antiguedad = new SimpleDateFormat ("yyyy-MM-dd");
+        int numeroMes; 
+        int diasMes;
+        int numeroDiasInicio;
+        int numeroDiasFin;
+        do{
+        numeroMes = (int)(Math.random()*(12)+1);
+        diasMes = buscarDiasMes(numeroMes);
        
-        int numeroDiasInicio = (int)(Math.random()*(diasMes)+1);
-        int numeroDiasFin = (int)(Math.random()*(diasMes)+1);
+        numeroDiasInicio = (int)(Math.random()*(diasMes)+1);
+        numeroDiasFin = (int)(Math.random()*(diasMes)+1);
         if (numeroDiasFin<numeroDiasInicio){
             int control;
             control=numeroDiasFin;
             numeroDiasFin=numeroDiasInicio;
             numeroDiasInicio=control;
         }
-        String fechaInicio = "2022/"+numeroMes+"/"+numeroDiasInicio; 
+        fechaInicio = "2022-"+numeroMes+"-"+numeroDiasInicio;
+        SimpleDateFormat dateFormat = new SimpleDateFormat ("yyyy-MM-dd");
+        inicio = dateFormat.parse(fechaInicio);
+        } while(inicio.before(antiguedad.parse(t.getFechaantiguedad())));
+        
         nomina.setFechainicio(fechaInicio);
-        String fechaFin = "2022/"+numeroMes+"/"+numeroDiasFin;  
+        String fechaFin = "2022-"+numeroMes+"-"+numeroDiasFin;  
         nomina.setFechafin(fechaFin);
         int diasTrabajados=(numeroDiasFin-numeroDiasInicio)+1;
+        nomina.setDiastrabajados(diasTrabajados);
          
         double salarioAnual = conseguirSalario(t.getGrupocotizacion(), t.getNivelcotizacion(), t.getLetra(),archivo); 
         double salarioBase=(salarioAnual/15)*diasTrabajados/diasMes;
         nomina.setSalariobase(salarioBase);
         
-        double plusTransporte = getPlusTransporte(archivo)*diasTrabajados; 
-        double gratificaciones = plusTransporte;
-        nomina.setGratificaciones(gratificaciones); //por ahora solo tenemos el plusTransporte si hay que añadir más esto hay que cambiarlo
+        double plusTransporte;
+        int aleatorio = (int)(Math.random()*(10)+1);
+        if ( aleatorio <=5) {
+            //plusTransporte = dimePlusTransporte(archivo)*diasTrabajados;
+            plusTransporte = getElemento(archivo, "plus_transporte")*diasTrabajados;
+        } else{
+            plusTransporte = 0;
+        }
+        nomina.setPlustransporte(plusTransporte);
         
-        double pagasExtraPro = salarioBase*3/12;
+        double capacitacionProfesional;
+        int aleatorio2 = (int)(Math.random()*(10)+1);
+        if ( aleatorio2 <=5) {
+            capacitacionProfesional = 20/100*salarioBase;
+        } else{
+            capacitacionProfesional = 0;
+        }
+        nomina.setCapacitacionprofesional(capacitacionProfesional);
+        
+        double complementos = plusTransporte + capacitacionProfesional;
+        nomina.setComplementos(complementos); 
+        
+        double pagasExtraPro = salarioBase*3/12; //todas las pagas extras se prorrotean
         nomina.setPagasextra(pagasExtraPro);
         
         double horasExtra = (int)(Math.random()*(10));
         nomina.setHorasextra(horasExtra);
         
-        double horasExtraFM = (int)(Math.random()*(5));
+        double horasExtraFM; //es más probable que no tengas que que tengas 
+        int aleatorio3 = (int)(Math.random()*(10)+1);
+        if ( aleatorio3 <=3) {
+            horasExtraFM = (int)(Math.random()*(5));
+        } else{
+            horasExtraFM = 0;
+        }
         nomina.setHorasextrafm(horasExtraFM);
         
             /*******Percepciones no salariales**************/
-        int diasConDieta=(int)(Math.random()*(diasTrabajados)+1); 
+        int diasConDieta;
         double dieta;
-        if (diasConDieta!=0){
-            dieta= getDieta(archivo)*diasConDieta;
-        } else{
+         do{
+            //dieta= getDieta(archivo)*diasConDieta;
+            diasConDieta =(int)(Math.random()*(diasTrabajados)+1); 
+            if (diasConDieta >=5){
+            dieta= getElemento(archivo, "dieta_media")*diasConDieta;
+            } else{
             dieta=0;
-        }
-        nomina.setDieta(dieta); //meter en base de datos
-       
+            }
+         }while(dieta>26.67); //no cotiza si es <= a 26.67
+        nomina.setDieta(dieta);
         
             /********total devengos*********/
-        double totalDevengado= salarioBase + gratificaciones + pagasExtraPro + horasExtra + horasExtraFM + dieta;
+        double totalDevengado= salarioBase + complementos + pagasExtraPro + horasExtra + horasExtraFM + dieta;
         nomina.setTotaldevengado(totalDevengado);
         
         
         /****************DEDUCCIONES********************************************************/
                /******* 3 bases *********/
-        double bccc = salarioBase + gratificaciones + pagasExtraPro;
+        double bccc = salarioBase + complementos + pagasExtraPro;
         double bhe = horasExtra + horasExtraFM;
         double bccp = bccc + bhe;
        
                /****** tipo de contrato para hallar el desempleo ***********/
-        String tipoContrato = t.getTipocontrato() ; //llamar a bbdd
+        String tipoContrato = t.getTipocontrato() ;
         int porcentajeIRPF = (int)(Math.random()*(20)+2); //aleatorio, en nuestro convenio solo tiene sentido entre 2 y 20%
         double desTrab=0;
         double desEmp=0;
@@ -430,7 +533,7 @@ public class NominaService {
         nomina.setHeempfm(heFMEmp);
         double fogasa = bccp * 0.2/100;
         nomina.setFogasa(fogasa);
-        double atep = bccp *1.5/100; //CNAE
+        double atep = bccp *1.5/100; //CNAE propio de la empresa
         nomina.setAtep(atep);
         double formacionEmp = bccp * 0.6/100;
         nomina.setFpemp(formacionEmp);
@@ -534,7 +637,7 @@ public class NominaService {
             return dias;
         }
     
-    //primer requisito MEJORADO: poner nombres genéricos y dejar en un solo método para transporte y dieta
+    //primer requisito 
     public double getElemento(String xml, String element){
         String elemento ="";
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -554,8 +657,8 @@ public class NominaService {
     }
     
     
-    //primer requisito
-    public double getPlusTransporte(String xml){
+   /* 
+    public double dimePlusTransporte(String xml){
         String transporte ="";
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
@@ -590,7 +693,7 @@ public class NominaService {
         }
         double dietaCantidad=Double.parseDouble(dieta);
         return dietaCantidad;
-}
+}*/
     }
 
 

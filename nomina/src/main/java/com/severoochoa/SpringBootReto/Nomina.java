@@ -96,13 +96,6 @@ public class Nomina {
         this.salariobase = salariobase;
     }
 
-    public double getGratificaciones() {
-        return gratificaciones;
-    }
-
-    public void setGratificaciones(double gratificaciones) {
-        this.gratificaciones = gratificaciones;
-    }
 
     public double getPagasextra() {
         return pagasextra;
@@ -112,13 +105,6 @@ public class Nomina {
         this.pagasextra = pagasextra;
     }
 
-    public double getPagasextrapro() {
-        return pagasextrapro;
-    }
-
-    public void setPagasextrapro(double pagasextrapro) {
-        this.pagasextrapro = pagasextrapro;
-    }
 
     public double getTotaldevengado() {
         return totaldevengado;
@@ -313,20 +299,22 @@ public class Nomina {
     @Column(name="salariobase")
     private double salariobase;
     
-    @Column(name="gratificaciones")
-    private double gratificaciones;
+    @Column(name="complementos")
+    private double complementos;
+
+    public double getComplementos() {
+        return complementos;
+    }
+
+    public void setComplementos(double complementos) {
+        this.complementos = complementos;
+    }
     
     @Column(name="pagasextra")
     private double pagasextra;
     
-    @Column(name="pagasextrapro")
-    private double pagasextrapro;
-    
     @Column(name="totaldevengado")
     private double totaldevengado;
-    
-    /*@Column(name="porcentajecctrab")
-    private double porcentajecctrab;*/
 
     @Column(name="cctrab")
     private double cctrab;
@@ -334,23 +322,14 @@ public class Nomina {
     @Column(name="destrab")
     private double destrab;
     
-    /*@Column(name="porcentajefptrab")
-    private double porcentajefptrab;*/
-    
     @Column(name="fptrab")
     private double fptrab;
-    
-    /*@Column(name="porcentajehefm")
-    private double porcentajehefm;*/
     
     @Column(name="horasextrafm")
     private double horasextrafm;
     
      @Column(name="horasextra")
     private double horasextra;
-    
-    /*@Column(name="porcentajeirpf")
-    private double porcentajeirpf;*/
     
     @Column(name="irpf")
     private double irpf;
@@ -390,6 +369,48 @@ public class Nomina {
         
     @Column(name="desemp")
     private double desemp;
+    
+    @Column(name="capacitacionprofesional")
+    private double capacitacionprofesional;
+    
+    @Column(name="plustransporte")
+    private double plustransporte;
+
+    public double getPlustransporte() {
+        return plustransporte;
+    }
+
+    public void setPlustransporte(double plustransporte) {
+        this.plustransporte = plustransporte;
+    }
+
+    public double getCapacitacionprofesional() {
+        return capacitacionprofesional;
+    }
+
+    public void setCapacitacionprofesional(double capacitacionprofesional) {
+        this.capacitacionprofesional = capacitacionprofesional;
+    }
+    
+    @Column(name="diastrabajados")
+    private int diastrabajados;
+
+    public int getDiastrabajados() {
+        return diastrabajados;
+    }
+    
+
+    public void setDiastrabajados(int diastrabajados) {
+        this.diastrabajados = diastrabajados;
+    }
+
+    public double getCcemp() {
+        return ccemp;
+    }
+
+    public void setCcemp(double ccemp) {
+        this.ccemp = ccemp;
+    }
     
     /*@Column(name="porcentajefpemp")
     private double porcentajefpemp;*/

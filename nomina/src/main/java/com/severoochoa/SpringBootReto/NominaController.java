@@ -6,6 +6,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +30,12 @@ public class NominaController {
     
     //primer requisito
     @PostMapping("/leerarchivo")
-    public void procesaFichero(HttpServletRequest request) throws IOException {
+    public void procesaFichero(HttpServletRequest request) throws IOException, ParseException {
         List<Trabajador> listaTrabajadores = service.dimeTrabajadores();
         String devuelveArchivo = service.getFileContent(request);
         for (Trabajador t : listaTrabajadores){
             service.generarNomina(t,devuelveArchivo);
         }
-                    service.conseguirSalario(5, 2, "B", devuelveArchivo);
-
     }
 
     @GetMapping("/empresa/{idemp}")
