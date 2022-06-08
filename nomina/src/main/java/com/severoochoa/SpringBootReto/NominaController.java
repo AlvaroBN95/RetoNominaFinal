@@ -70,11 +70,12 @@ public class NominaController {
   
     //tercer requisito
   @GetMapping("/nominas")
-  public void getAllNominas() throws FileNotFoundException, DocumentException {
+  public void getAllNominas() throws DocumentException, FileNotFoundException {
         List<Nomina> listaNominas = service.dimeNominas();
         for (Nomina nomina : listaNominas){
-            service.generarZIP((Document) service.generarPDF(nomina));
+             service.generarPDF(nomina);
         }
+        service.generarZIP();
     }
 
 }
