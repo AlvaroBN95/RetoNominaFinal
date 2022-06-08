@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
-//import com.itextpdf.text.Document;
+
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
@@ -19,6 +19,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 
 import java.io.InputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -33,12 +35,15 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+ 
 
 /**
  *
@@ -100,13 +105,14 @@ public class NominaService {
      
     //segundo requisito
     public com.itextpdf.text.Document generarPDF(Nomina nomina) throws FileNotFoundException, DocumentException{
+      
         //crear el objeto trabajador y nómina al que pertenece ese id 
         Trabajador trabajador = getTrabajadorById(nomina.getIdtrab());
         Empresa empresa = getEmpresaById(trabajador.getIdemp());
         
         //creamos el pdf con el nombre y fecha de la nómina del trabajador
         com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-        PdfWriter.getInstance((com.itextpdf.text.Document) document, new FileOutputStream("D:\\" + trabajador.getNomtrab()+"_"+ nomina.getFechafin()+".pdf"));
+        PdfWriter.getInstance((com.itextpdf.text.Document) document, new FileOutputStream("C:\\Users\\Alvaro\\Desktop\\nominas\\" + empresa.getCif()+"\\" + trabajador.getNaf()+"_"+ nomina.getFechafin()+".pdf"));
         
         //inicio
         document.open();
@@ -342,8 +348,56 @@ public class NominaService {
      }
      
      //tercer requisito
-     public void generarZIP (Document nominaPDF){
-         
+     public void generarZIP (){
+          String zipFile = "C:\\Users\\Alvaro\\Desktop\\zipnomina\\Todas_Nominas.zip";
+
+      
+        //hacer un for para que lea primero empresa1 luego empresa2 y ya entre para lo archivos.hecho
+        File f1 = new File("C:\\Users\\Alvaro\\Desktop\\nominas\\");
+        
+        String srcFiles[] = f1.list();
+
+        try {
+            FileOutputStream fos = new FileOutputStream(zipFile);
+
+            ZipOutputStream zos = new ZipOutputStream(fos);
+
+            for (int e = 0; e < srcFiles.length; e++) {
+
+                File f2 = new File(f1.getPath() + "/" + srcFiles[e]);
+                String[] direccion = f2.list();
+
+                // create byte buffer
+                byte[] buffer = new byte[1024];
+
+                for (int i = 0; i < direccion.length; i++) {
+
+                    File srcFile = new File(direccion[i]);
+
+                    FileInputStream fis = new FileInputStream(f2.getPath() + "/" + srcFile);
+
+                    zos.putNextEntry(new ZipEntry(srcFile.getName()));
+                    // begin writing a new ZIP entry, positions the stream to the start of the entry data
+
+                    int length;
+
+                    while ((length = fis.read(buffer)) > 0) {
+                        zos.write(buffer, 0, length);
+                    }
+
+                    zos.closeEntry();
+
+                    // close the InputStream
+                    fis.close();
+                }
+            }
+            // close the ZipOutputStream
+            zos.close();
+
+        } catch (IOException ioe) {
+            System.out.println("Error creating zip file: " + ioe);
+        }
+    
      }
 
     public Trabajador getTrabajadorById(Long idtrab) {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.w3c.dom.Document;
 
 /**
  *
@@ -69,14 +70,15 @@ public class NominaController {
             return ResponseEntity.ok(nomina);
         }
     }
-  /*
+  
     //tercer requisito
   @GetMapping("/nominas")
-  public void getAllNominas() {
+  public void getAllNominas() throws DocumentException, FileNotFoundException {
         List<Nomina> listaNominas = service.dimeNominas();
         for (Nomina nomina : listaNominas){
-            service.generarZIP(service.generarPDF(nomina));
+             service.generarPDF(nomina);
         }
-    }*/
+        service.generarZIP();
+    }
 
 }

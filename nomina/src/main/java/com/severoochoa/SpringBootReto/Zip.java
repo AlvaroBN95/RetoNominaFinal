@@ -10,7 +10,6 @@ package com.severoochoa.SpringBootReto;
  */
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
@@ -18,60 +17,165 @@ import java.util.zip.ZipOutputStream;
 
 public class Zip {
 
-    public static void main(String[] args) {
-        // cadena que contiene la ruta donde están los archivos a comprimir
-        String directorioZip = "D:\\Nomina\\";
-        // cadena que contiene la ruta donde están los archivos comprimidos
-        String directorioaZip = "D:\\";
-        // ruta completa donde están los archivos a comprimir
-        File carpetaComprimir = new File(directorioZip);
+   
+    
+   
+    public void generarTodo() {
+        String zipFile = "C:\\Users\\Alvaro\\Desktop\\zipnomina\\Todas_Nominas.zip";
 
-        // valida si existe el directorio
-        if (carpetaComprimir.exists()) {
-            // lista los archivos que hay dentro del directorio
-            File[] ficheros = carpetaComprimir.listFiles();
-            System.out.println("Número de ficheros encontrados: " + ficheros.length);
+      
+        //hacer un for para que lea primero empresa1 luego empresa2 y ya entre para lo archivos.hecho
+        File f1 = new File("C:\\Users\\Alvaro\\Desktop\\nominas\\");
+        
+        String srcFiles[] = f1.list();
 
-            // ciclo para recorrer todos los archivos a comprimir
-            for (int i = 0; i < ficheros.length; i++) {
-                System.out.println("Nombre del fichero: " + ficheros[i].getName());
-                String extension = "";
-                for (int j = 0; j < ficheros[i].getName().length(); j++) {
-                    //obtiene la extensión del archivo
-                    if (ficheros[i].getName().charAt(j) == '.') {
-                        extension = ficheros[i].getName().substring(j, (int) ficheros[i].getName().length());
-                        //System.out.println(extension);
+        try {
+            FileOutputStream fos = new FileOutputStream(zipFile);
+
+            ZipOutputStream zos = new ZipOutputStream(fos);
+
+            for (int e = 0; e < srcFiles.length; e++) {
+
+                File f2 = new File(f1.getPath() + "/" + srcFiles[e]);
+                String[] direccion = f2.list();
+
+                // create byte buffer
+                byte[] buffer = new byte[1024];
+
+                for (int i = 0; i < direccion.length; i++) {
+
+                    File srcFile = new File(direccion[i]);
+
+                    FileInputStream fis = new FileInputStream(f2.getPath() + "/" + srcFile);
+
+                    zos.putNextEntry(new ZipEntry(srcFile.getName()));
+                    // begin writing a new ZIP entry, positions the stream to the start of the entry data
+
+                    int length;
+
+                    while ((length = fis.read(buffer)) > 0) {
+                        zos.write(buffer, 0, length);
                     }
-                }
-                try {
-                    // crea un buffer temporal para ir poniendo los archivos a comprimir
-                    ZipOutputStream zous = new ZipOutputStream(new FileOutputStream(directorioaZip + "Nomina.zip"));
 
-                    //nombre con el que se va guardar el archivo dentro del zip
-                    ZipEntry entrada = new ZipEntry(ficheros[i].getName());
-                    zous.putNextEntry(entrada);
+                    zos.closeEntry();
 
-                    //System.out.println("Nombre del Archivo: " + entrada.getName());
-                    System.out.println("Comprimiendo.....");
-                    //obtiene el archivo para irlo comprimiendo
-                    FileInputStream fis = new FileInputStream(directorioZip + entrada.getName());
-                    int leer;
-                    byte[] buffer = new byte[1024];
-                    while (0 < (leer = fis.read(buffer))) {
-                        zous.write(buffer, 0, leer);
-                    }
+                    // close the InputStream
                     fis.close();
-                    zous.closeEntry();
-                    zous.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
-            System.out.println("Directorio de salida: " + directorioZip);
-        } else {
-            System.out.println("No se encontró el directorio..");
+            // close the ZipOutputStream
+            zos.close();
+
+        } catch (IOException ioe) {
+            System.out.println("Error creating zip file: " + ioe);
         }
+    
+    }
+  //buscar un trabajador.
+        
+    
+    public void generarPorNaf(String cif,String Naf) {
+        String zipFile = "C:/Users/Alvaro/Desktop/prueba/Nomina.zip/";
+
+        
+        File f1 = new File("C:/Users/Alvaro/Desktop/archivos/"+ Naf );
+        String srcFiles[] = f1.list();
+        for (int i = 0; i < srcFiles.length; i++) {
+
+            System.out.println(f1.getPath() + "/" + srcFiles[i] + "/");
+        }
+
+        try {
+
+            // create byte buffer
+            byte[] buffer = new byte[1024];
+
+            FileOutputStream fos = new FileOutputStream(zipFile);
+
+            ZipOutputStream zos = new ZipOutputStream(fos);
+
+            for (int i = 0; i < srcFiles.length; i++) {
+
+                File srcFile = new File(srcFiles[i]);
+
+                FileInputStream fis = new FileInputStream(f1.getPath() + "/" + srcFile);
+
+                // begin writing a new ZIP entry, positions the stream to the start of the entry data
+                zos.putNextEntry(new ZipEntry(srcFile.getName()));
+
+                int length;
+
+                while ((length = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, length);
+                }
+
+                zos.closeEntry();
+
+                // close the InputStream
+                fis.close();
+
+            }
+
+            // close the ZipOutputStream
+            zos.close();
+
+        } catch (IOException ioe) {
+            System.out.println("Error creating zip file: " + ioe);
+        }
+    }
+    
+    //buscar por empresa.
+    public void generarPorempresa(String cif) {
+        String zipFile = "C:/Users/Alvaro/Desktop/prueba/Nomina.zip/";
+
+        
+        File f1 = new File("C:/Users/Alvaro/Desktop/archivos/"+ cif );
+        String srcFiles[] = f1.list();
+        for (int i = 0; i < srcFiles.length; i++) {
+
+            System.out.println(f1.getPath() + "/" + srcFiles[i] + "/");
+        }
+
+        try {
+
+            // create byte buffer
+            byte[] buffer = new byte[1024];
+
+            FileOutputStream fos = new FileOutputStream(zipFile);
+
+            ZipOutputStream zos = new ZipOutputStream(fos);
+
+            for (int i = 0; i < srcFiles.length; i++) {
+
+                File srcFile = new File(srcFiles[i]);
+
+                FileInputStream fis = new FileInputStream(f1.getPath() + "/" + srcFile);
+
+                // begin writing a new ZIP entry, positions the stream to the start of the entry data
+                zos.putNextEntry(new ZipEntry(srcFile.getName()));
+
+                int length;
+
+                while ((length = fis.read(buffer)) > 0) {
+                    zos.write(buffer, 0, length);
+                }
+
+                zos.closeEntry();
+
+                // close the InputStream
+                fis.close();
+
+            }
+
+            // close the ZipOutputStream
+            zos.close();
+
+        } catch (IOException ioe) {
+            System.out.println("Error creating zip file: " + ioe);
+        }
+    }
+
+    public static void main(String[] args) {
+
     }
 }
