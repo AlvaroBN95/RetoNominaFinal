@@ -110,7 +110,7 @@ public class NominaService {
 
         //creamos el pdf con el nombre y fecha de la nómina del trabajador
         com.itextpdf.text.Document document = new com.itextpdf.text.Document();
-        PdfWriter.getInstance((com.itextpdf.text.Document) document, new FileOutputStream("C:\\Users\\Alvaro\\Desktop\\nominas\\" + empresa.getCif() + "\\" + trabajador.getNaf() + "_" + nomina.getFechafin() + ".pdf"));
+        PdfWriter.getInstance((com.itextpdf.text.Document) document, new FileOutputStream("C:\\Users\\Alvaro\\Desktop\\nominas\\" + empresa.getIdEmp() + "\\" + trabajador.getNaf() + "_" + nomina.getFechafin() + ".pdf"));
 
         //inicio
         document.open();
@@ -131,7 +131,7 @@ public class NominaService {
 
         //Trabajador
         Chunk trabajadores = new Chunk("TRABAJADOR", titulos);
-        Chunk nomtrab = new Chunk("-Nombre del trabajador: " + trabajador.getApe1emp() + " " + trabajador.getApe2emp(), contenidos);
+        Chunk nomtrab = new Chunk("-Nombre del trabajador: " + trabajador.getNomtrab() + " " + trabajador.getApe1emp() + " " + trabajador.getApe2emp(), contenidos);
         Chunk niftrab = new Chunk("-NIF: " + trabajador.getDni(), contenidos);
         Chunk nastrab = new Chunk("-Nº afiliacón S.S: " + trabajador.getNaf(), contenidos);
         Chunk gruppro = new Chunk("-Grupo profesional: " + trabajador.getGrupoprofesional(), contenidos);
@@ -398,11 +398,13 @@ public class NominaService {
     }
 
     public void generarZIPTrabajador(Long id) {
-//" + "_" + id + "
+        Trabajador trabajador = getTrabajadorById(id);
+
+        //" + "_" + id + "
         //nomtrab
         //naf 
         String cortar[] = new String[2];
-        String zipFile = "C:\\Users\\Alvaro\\Desktop\\zipnomina\\nomtrab.zip";
+        String zipFile = "C:\\Users\\Alvaro\\Desktop\\zipnomina\\" + trabajador.getNomtrab() + "_" + id + " .zip";
 
         File f1 = new File("C:\\Users\\Alvaro\\Desktop\\nominas");
         String srcFiles[] = f1.list();
@@ -422,7 +424,7 @@ public class NominaService {
 
                 for (int i = 0; i < direccion.length; i++) {
                     cortar = direccion[i].split("_");
-                    if (cortar[0].equals("031258974586")) {
+                    if (cortar[0].equals(trabajador.getNaf())) {
 
                         File srcFile = new File(direccion[i]);
 
@@ -454,11 +456,11 @@ public class NominaService {
 
     }
 
-    public void genererarZIPEmpresa(int idemp) {
-
+    public void generarZIPEmpresa(Long idemp) {
+        Empresa empresa = getEmpresaById(idemp);
         //nombre empresa
         //
-        String zipFile = "C:\\Users\\Alvaro\\Desktop\\zipnomina\\empresaurio.zip";
+        String zipFile = "C:\\Users\\Alvaro\\Desktop\\zipnomina\\"+empresa.getNomEmp()+".zip";
 
         //hacer un for para que lea primero empresa1 luego empresa2 y ya entre para lo archivos.hecho
         File f1 = new File("C:\\Users\\Alvaro\\Desktop\\nominas\\");
@@ -471,7 +473,7 @@ public class NominaService {
             ZipOutputStream zos = new ZipOutputStream(fos);
 
             for (int e = 0; e < srcFiles.length; e++) {
-                if (srcFiles[e].equals("A55667788")) {
+                if (Long.toString(idemp).equals(srcFiles[e]) ) {
 
                     File f2 = new File(f1.getPath() + "/" + srcFiles[e]);
                     String[] direccion = f2.list();
@@ -508,6 +510,7 @@ public class NominaService {
             System.out.println("Error creating zip file: " + ioe);
         }
     }
+//Requisito extra
 
     public Trabajador getTrabajadorById(Long idtrab) {
         Optional<Trabajador> trabajador = repositorioTrabajador.findByIdtrab(idtrab);

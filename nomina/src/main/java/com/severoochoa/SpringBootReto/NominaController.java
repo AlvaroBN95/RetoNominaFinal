@@ -40,10 +40,10 @@ public class NominaController {
     }
     
     //extra
- /* @GetMapping("/empresa/{idemp}")
+  @GetMapping("/empresa/{idemp}")
     public void getEmpresaById(@PathVariable("idemp") Long idemp) {
-        service.getZIPEmpresa(idemp);
-    }*/
+        service.generarZIPEmpresa(idemp);
+    }
     
     //extra
     @GetMapping("/trabajador/{idtrab}")
