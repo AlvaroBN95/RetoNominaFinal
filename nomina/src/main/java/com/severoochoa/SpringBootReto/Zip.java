@@ -73,9 +73,8 @@ public class Zip {
     }
   //buscar un trabajador.
         
-    
     public void generarPorNaf(String cif,String Naf) {
-        String zipFile = "C:/Users/Alvaro/Desktop/prueba/Nomina.zip/";
+        String zipFile = "C:/Users/Alvaro/Desktop/prueba/.zip/";
 
         
         File f1 = new File("C:/Users/Alvaro/Desktop/archivos/"+ Naf );

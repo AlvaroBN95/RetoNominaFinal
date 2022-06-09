@@ -40,20 +40,18 @@ public class NominaController {
     }
     
     //extra
-  @GetMapping("/empresa/{idemp}")
+ /* @GetMapping("/empresa/{idemp}")
     public void getEmpresaById(@PathVariable("idemp") Long idemp) {
         service.getZIPEmpresa(idemp);
-    }
+    }*/
     
     //extra
     @GetMapping("/trabajador/{idtrab}")
-    public ResponseEntity<Trabajador> getTrabajadorById(@PathVariable("idtrab") Long idtrab) {
-        Trabajador trabajador = service.getTrabajadorById(idtrab);
-        if (trabajador == null) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(trabajador);
-        }
+    public void getTrabajadorById(@PathVariable("idtrab") Long idtrab) {
+        service.generarZIPTrabajador(idtrab);
+        
+        
+        
     }
   
    
