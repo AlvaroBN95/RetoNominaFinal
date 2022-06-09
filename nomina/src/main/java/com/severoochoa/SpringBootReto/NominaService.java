@@ -5,7 +5,6 @@
  */
 package com.severoochoa.SpringBootReto;
 
-import java.io.ByteArrayOutputStream;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
