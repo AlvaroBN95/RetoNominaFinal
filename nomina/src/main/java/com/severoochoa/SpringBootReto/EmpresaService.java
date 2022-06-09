@@ -37,15 +37,6 @@ public class EmpresaService {
  
     }
      
-    /* public Empresa mostrarTodo(Long id){
-        Optional<List<Empresa>> empresa = repositorioEmpresa.listarEmpresaId();
-        if (empresa.isPresent()){
-            return empresa.get();
-        } else {
-            return null;
-        }
- 
-    }*/
-     
+  
      }
 

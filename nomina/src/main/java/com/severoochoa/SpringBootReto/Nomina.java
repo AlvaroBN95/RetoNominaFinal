@@ -340,29 +340,6 @@ public class Nomina {
     @Column(name="totalliquido")
     private double totalliquido;
     
-    /*@Column(name="remuneracionemp")
-    private double remuneracionemp;*/
-    
-   /* @Column(name="prorratapagaextra")
-    private double prorratapagaextra;
-    
-    @Column(name="baseinctemp")
-    private double baseinctemp;
-    
-    @Column(name="devengadossemp") 
-    private double devengadossemp;
-    
-    @Column(name="porcentajeempss")
-    private double porcentajeempss;
-    
-    @Column(name="ssemp")
-    private double ssemp;
-    
-    @Column(name="basecp")
-    private double basecp;
-    
-    @Column(name="porcentajedesemp")
-    private double porcentajedesemp;*/
     
     @Column(name="atep")
     private double atep;
@@ -412,29 +389,19 @@ public class Nomina {
         this.ccemp = ccemp;
     }
     
-    /*@Column(name="porcentajefpemp")
-    private double porcentajefpemp;*/
     
     @Column(name="fpemp")
     private double fpemp;
     
-   /* @Column(name="porcentajefogasa")
-    private double porcentajefogasa;*/
+
     
     @Column(name="fogasa")
     private double fogasa;
     
-    /*@Column(name="porcentajecothe")
-    private double porcentajecothe;
-    
-    @Column(name="cothe")
-    private double cothe;*/
     
     @Column(name="totalaporemp")
     private double totalaporemp;
     
-    /*@Column(name="baseretenirpf")
-    private double baseretenirpf;*/
     
     @Column(name="fechainicio")
     private String fechainicio;
@@ -442,22 +409,22 @@ public class Nomina {
     @Column(name="fechafin")
     private String fechafin;
     
-    @Column(name="hetrab") //añadir a la bd
+    @Column(name="hetrab") 
     private double hetrab;
     
-    @Column(name="hetrabfm") //añadir a la bd
+    @Column(name="hetrabfm") 
     private double hetrabfm;
     
-    @Column(name="heempfm") //añadir a la bd
+    @Column(name="heempfm") 
     private double heempfm;
     
-    @Column(name="heemp") //añadir a la bd
+    @Column(name="heemp") 
     private double heemp;
     
-    @Column(name="ccemp") //añadir a la bd
+    @Column(name="ccemp") 
     private double ccemp;
     
-    @Column(name="dieta") //añadir a la bd
+    @Column(name="dieta") 
     private double dieta;
 
     public double getDieta() {

@@ -39,13 +39,13 @@ public class NominaController {
         }
     }
     
-    //extra
+    //extra, generar zip de los trabajadores de una empresa.
   @GetMapping("/empresa/{idemp}")
     public void getEmpresaById(@PathVariable("idemp") Long idemp) {
         service.generarZIPEmpresa(idemp);
     }
     
-    //extra
+    //extra,generar zip de un trabajador en concreto.
     @GetMapping("/trabajador/{idtrab}")
     public void getTrabajadorById(@PathVariable("idtrab") Long idtrab) {
         service.generarZIPTrabajador(idtrab);

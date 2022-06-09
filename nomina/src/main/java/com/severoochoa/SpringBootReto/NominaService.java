@@ -347,9 +347,10 @@ public class NominaService {
 
     //tercer requisito
     public void generarZIP() {
+        //asignamosla direccion de las creacion y nombre del zip.
         String zipFile = "C:\\Users\\Alvaro\\Desktop\\zipnomina\\Todas_Nominas.zip";
 
-        //hacer un for para que lea primero empresa1 luego empresa2 y ya entre para lo archivos.hecho
+        //hacemos un array al que le asignamos el contenido de file
         File f1 = new File("C:\\Users\\Alvaro\\Desktop\\nominas\\");
 
         String srcFiles[] = f1.list();
@@ -359,14 +360,16 @@ public class NominaService {
 
             ZipOutputStream zos = new ZipOutputStream(fos);
 
+            //recorremos las carpetas.
             for (int e = 0; e < srcFiles.length; e++) {
 
                 File f2 = new File(f1.getPath() + "/" + srcFiles[e]);
                 String[] direccion = f2.list();
 
-                // create byte buffer
+                // creamps un buffer de tipo byte.
                 byte[] buffer = new byte[1024];
 
+                //recorremos los archvios para poder almacenarlos en el zip.
                 for (int i = 0; i < direccion.length; i++) {
 
                     File srcFile = new File(direccion[i]);
@@ -374,7 +377,7 @@ public class NominaService {
                     FileInputStream fis = new FileInputStream(f2.getPath() + "/" + srcFile);
 
                     zos.putNextEntry(new ZipEntry(srcFile.getName()));
-                    // begin writing a new ZIP entry, positions the stream to the start of the entry data
+                    //entrada del nuevo zip y comiezo de insercion de datos.
 
                     int length;
 
@@ -384,11 +387,10 @@ public class NominaService {
 
                     zos.closeEntry();
 
-                    // close the InputStream
                     fis.close();
                 }
             }
-            // close the ZipOutputStream
+            //cuando cerramos el for se cierra el zip y asi evitamos que al cerrarlo antes y no abrirlo se eliminen en cada vuelta del for.
             zos.close();
 
         } catch (IOException ioe) {
@@ -400,12 +402,11 @@ public class NominaService {
     public void generarZIPTrabajador(Long id) {
         Trabajador trabajador = getTrabajadorById(id);
 
-        //" + "_" + id + "
-        //nomtrab
-        //naf 
+        //asignamosla direccion de las creacion y nombre del zip.
         String cortar[] = new String[2];
         String zipFile = "C:\\Users\\Alvaro\\Desktop\\zipnomina\\" + trabajador.getNomtrab() + "_" + id + " .zip";
 
+        //hacemos un array al que le asignamos el contenido de file
         File f1 = new File("C:\\Users\\Alvaro\\Desktop\\nominas");
         String srcFiles[] = f1.list();
 
@@ -419,10 +420,12 @@ public class NominaService {
                 File f2 = new File(f1.getPath() + "/" + srcFiles[e]);
                 String[] direccion = f2.list();
 
-                // create byte buffer
+                // creamps un buffer de tipo byte.
                 byte[] buffer = new byte[1024];
 
+                //recorremos los archvios para poder almacenarlos en el zip.
                 for (int i = 0; i < direccion.length; i++) {
+                    //cortamos del nombre del archivo la parte que nos interesa y la comprobamos para decidir que mandamos al zip y que no.
                     cortar = direccion[i].split("_");
                     if (cortar[0].equals(trabajador.getNaf())) {
 
@@ -431,7 +434,7 @@ public class NominaService {
                         FileInputStream fis = new FileInputStream(f2.getPath() + "/" + srcFile);
 
                         zos.putNextEntry(new ZipEntry(srcFile.getName()));
-                        // begin writing a new ZIP entry, positions the stream to the start of the entry data
+                        //entrada del nuevo zip y comiezo de insercion de datos.
 
                         int length;
 
@@ -441,13 +444,12 @@ public class NominaService {
 
                         zos.closeEntry();
 
-                        // close the InputStream
                         fis.close();
                     }
                 }
             }
 
-            // close the ZipOutputStream
+            //cuando cerramos el for se cierra el zip y asi evitamos que al cerrarlo antes y no abrirlo se eliminen en cada vuelta del for.
             zos.close();
 
         } catch (IOException ioe) {
@@ -458,11 +460,11 @@ public class NominaService {
 
     public void generarZIPEmpresa(Long idemp) {
         Empresa empresa = getEmpresaById(idemp);
-        //nombre empresa
-        //
-        String zipFile = "C:\\Users\\Alvaro\\Desktop\\zipnomina\\"+empresa.getNomEmp()+".zip";
 
-        //hacer un for para que lea primero empresa1 luego empresa2 y ya entre para lo archivos.hecho
+        //asignamosla direccion de las creacion y nombre del zip.
+        String zipFile = "C:\\Users\\Alvaro\\Desktop\\zipnomina\\" + empresa.getNomEmp() + ".zip";
+
+        //hacemos un array al que le asignamos el contenido de file
         File f1 = new File("C:\\Users\\Alvaro\\Desktop\\nominas\\");
 
         String srcFiles[] = f1.list();
@@ -472,15 +474,17 @@ public class NominaService {
 
             ZipOutputStream zos = new ZipOutputStream(fos);
 
+            //comparamos el id que le damos con las carpetas para selecionar la que queremos.
             for (int e = 0; e < srcFiles.length; e++) {
-                if (Long.toString(idemp).equals(srcFiles[e]) ) {
+                if (Long.toString(idemp).equals(srcFiles[e])) {
 
                     File f2 = new File(f1.getPath() + "/" + srcFiles[e]);
                     String[] direccion = f2.list();
 
-                    // create byte buffer
+                    // creamps un buffer de tipo byte.
                     byte[] buffer = new byte[1024];
 
+                    //recorremos los archvios para poder almacenarlos en el zip.
                     for (int i = 0; i < direccion.length; i++) {
 
                         File srcFile = new File(direccion[i]);
@@ -488,7 +492,8 @@ public class NominaService {
                         FileInputStream fis = new FileInputStream(f2.getPath() + "/" + srcFile);
 
                         zos.putNextEntry(new ZipEntry(srcFile.getName()));
-                        // begin writing a new ZIP entry, positions the stream to the start of the entry data
+                         //entrada del nuevo zip y comiezo de insercion de datos.
+
 
                         int length;
 
@@ -498,12 +503,12 @@ public class NominaService {
 
                         zos.closeEntry();
 
-                        // close the InputStream
+                      
                         fis.close();
                     }
                 }
             }
-            // close the ZipOutputStream
+         //cuando cerramos el for se cierra el zip y asi evitamos que al cerrarlo antes y no abrirlo se eliminen en cada vuelta del for.
             zos.close();
 
         } catch (IOException ioe) {
@@ -875,45 +880,4 @@ public class NominaService {
         return elementoCantidad;
     }
 
-    /* 
-    public double dimePlusTransporte(String xml){
-        String transporte ="";
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder;
-        Document doc;
-        try {
-            builder = factory.newDocumentBuilder();
-            doc = (Document) builder.parse(new InputSource(new StringReader(xml)));
-            doc.getDocumentElement().normalize();
-            NodeList valorTransporte = doc.getElementsByTagName("plus_transporte");
-            transporte = valorTransporte.item(0).getTextContent();
-            } catch (SAXException | IOException | ParserConfigurationException e) {
-            System.err.println("Error! " + e.getMessage());
-        }
-        double transporteCantidad=Double.parseDouble(transporte);
-        return transporteCantidad;
-    }
-    
-    //primer requisito
-    public double getDieta(String xml){
-        String dieta ="";
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder;
-        Document doc;
-        try {
-            builder = factory.newDocumentBuilder();
-            doc = (Document) builder.parse(new InputSource(new StringReader(xml)));
-            doc.getDocumentElement().normalize();
-            NodeList valorDieta = doc.getElementsByTagName("dieta_media");
-            dieta = valorDieta.item(0).getTextContent();
-            } catch (SAXException | IOException | ParserConfigurationException e) {
-            System.err.println("Error! " + e.getMessage());
-        }
-        double dietaCantidad=Double.parseDouble(dieta);
-        return dietaCantidad;
-}*/
-    //extra
-    public void getZIPEmpresa(Long idemp) {
-
-    }
 }
