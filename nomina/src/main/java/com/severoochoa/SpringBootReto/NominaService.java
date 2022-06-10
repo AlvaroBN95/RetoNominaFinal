@@ -425,7 +425,7 @@ public class NominaService {
                 File f2 = new File(f1.getPath() + "/" + srcFiles[e]);
                 String[] direccion = f2.list();
 
-                // creamps un buffer de tipo byte.
+                // creamos un buffer de tipo byte.
                 byte[] buffer = new byte[1024];
 
                 //recorremos los archvios para poder almacenarlos en el zip.
