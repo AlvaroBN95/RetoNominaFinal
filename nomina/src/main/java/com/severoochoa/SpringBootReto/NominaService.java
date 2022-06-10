@@ -135,6 +135,8 @@ public class NominaService {
         Chunk nastrab = new Chunk("-Nº afiliacón S.S: " + trabajador.getNaf(), contenidos);
         Chunk gruppro = new Chunk("-Grupo profesional: " + trabajador.getGrupoprofesional(), contenidos);
         Chunk grupcot = new Chunk("-Grupo cotización: " + trabajador.getGrupocotizacion(), contenidos);
+        Chunk nivelcot = new Chunk("-Nivel cotización: " + trabajador.getNivelcotizacion(), contenidos);
+        Chunk letra = new Chunk("-Letra: " + trabajador.getLetra(), contenidos);
         Chunk feac = new Chunk("-Fecha de antigüedad: " + trabajador.getFechaantiguedad(), contenidos);
 
         //Tierra de nadie
@@ -229,6 +231,10 @@ public class NominaService {
         document.add(gruppro);
         document.add(parrafo);
         document.add(grupcot);
+        document.add(parrafo);
+        document.add(nivelcot);
+        document.add(parrafo);
+        document.add(letra);
         document.add(parrafo);
         document.add(feac);
         document.add(parrafo);
@@ -684,7 +690,7 @@ public class NominaService {
         /**
          * **** tipo de contrato para hallar el desempleo **********
          */
-        //tipo de contrato extraido del xml
+        //tipo de contrato extraido de la base de datos
         String tipoContrato = t.getTipocontrato();
         //IRPF, se genera un aleatorio,en nuestro convenio solo tiene sentido entre 2 y 20%
         int porcentajeIRPF = (int) (Math.random() * (20) + 2);
